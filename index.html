@@ -174,7 +174,7 @@
                 if (salvo) {
                     const dados = JSON.parse(salvo);
                     usuarioLogado = dados.usuario;
-                    tipoLogado = dados.tipo;
+                    tipoLogado = dados.tipo.toLowerCase(); // CORREÇÃO AQUI
                     nomeLogado = dados.nome;
                     entrarNoSistema();
                 }
@@ -229,7 +229,7 @@
             get(ref(db, `usuarios/${user}`)).then(snap => {
                 if (snap.exists() && snap.val().senha === pass && snap.val().ativo) {
                     usuarioLogado = user;
-                    tipoLogado = snap.val().tipo.toLowerCase(); // FORÇA MINÚSCULO
+                    tipoLogado = snap.val().tipo.toLowerCase(); // CORREÇÃO AQUI
                     nomeLogado = snap.val().nome;
                     localStorage.setItem('usuarioLogado', JSON.stringify({usuario: user, tipo: tipoLogado, nome: nomeLogado}));
                     entrarNoSistema();
@@ -270,7 +270,7 @@
             const abas = document.getElementById('abas');
             abas.innerHTML = '';
             const todasAbas = ['Painel', 'Pedidos', 'Chat'];
-            if (tipoLogado === 'admin') todasAbas.push('Usuários'); // AGORA FUNCIONA
+            if (tipoLogado === 'admin') todasAbas.push('Usuários'); // AGORA VAI
             if (tipoLogado === 'restaurante') document.getElementById('formPedido').classList.remove('hidden');
             
             todasAbas.forEach((aba, i) => {
