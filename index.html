@@ -7,8 +7,8 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
+       .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
+       .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2, h3 { margin-bottom: 15px; color: #1a73e8; }
         h1 { text-align: center; }
         input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
@@ -17,35 +17,39 @@
         button.danger { background: #d93025; }
         button.success { background: #188038; }
         button.warning { background: #f9ab00; }
-        .hidden { display: none !important; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; }
-        .conectado { background: #e6f4ea; color: #188038; }
-        .erro { background: #fce8e6; color: #d93025; }
-        .pedido { border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin: 10px 0; }
-        .pedido.novo { border-left: 5px solid #f9ab00; animation: piscar 1s infinite; }
-        .pedido.andamento { border-left: 5px solid #1a73e8; }
-        .pedido.finalizado { border-left: 5px solid #188038; opacity: 0.7; }
+       .hidden { display: none!important; }
+       .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
+       .grid-3 { display: grid; grid-template-columns: 1fr; gap: 15px; }
+        @media (min-width: 768px) { 
+           .grid { grid-template-columns: 1fr 1fr; }
+           .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
+        }
+       .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; }
+       .conectado { background: #e6f4ea; color: #188038; }
+       .erro { background: #fce8e6; color: #d93025; }
+       .pedido { border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin: 10px 0; }
+       .pedido.novo { border-left: 5px solid #f9ab00; animation: piscar 1s infinite; }
+       .pedido.andamento { border-left: 5px solid #1a73e8; }
+       .pedido.finalizado { border-left: 5px solid #188038; opacity: 0.7; }
         @keyframes piscar { 50% { background: #fff3cd; } }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; overflow-x: auto; }
-        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
-        .tab.ativo { border-bottom: 3px solid #1a73e8; font-weight: bold; }
-        .chat-box { height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
-        .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; word-break: break-word; }
-        .msg.minha { background: #d2e3fc; margin-left: auto; }
-        .msg.outra { background: #e8eaed; }
-        .notificacao { position: fixed; top: 20px; right: 20px; background: #d93025; color: white; padding: 15px 20px; border-radius: 8px; z-index: 9999; animation: tremer 0.5s infinite; }
+       .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+       .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; overflow-x: auto; }
+       .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
+       .tab.ativo { border-bottom: 3px solid #1a73e8; font-weight: bold; }
+       .chat-box { height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
+       .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; word-break: break-word; }
+       .msg.minha { background: #d2e3fc; margin-left: auto; }
+       .msg.outra { background: #e8eaed; }
+       .notificacao { position: fixed; top: 20px; right: 20px; background: #d93025; color: white; padding: 15px 20px; border-radius: 8px; z-index: 9999; animation: tremer 0.5s infinite; }
         @keyframes tremer { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; overflow-x: auto; display: block; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; }
         th { background: #f1f3f4; }
-        .badge { padding: 3px 8px; border-radius: 12px; font-size: 12px; color: white; }
-        .badge.admin { background: #d93025; }
-        .badge.entregador { background: #1a73e8; }
-        .badge.restaurante { background: #188038; }
-        @media (max-width: 768px) { .grid, .grid-3 { grid-template-columns: 1fr; } }
+       .badge { padding: 3px 8px; border-radius: 12px; font-size: 12px; color: white; }
+       .badge.admin { background: #d93025; }
+       .badge.entregador { background: #1a73e8; }
+       .badge.restaurante { background: #188038; }
+       .form-box { border: 2px solid #1a73e8; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
     </style>
 </head>
 <body>
@@ -89,7 +93,7 @@
 
             <div id="abaPedidos" class="card aba hidden">
                 <h2>📦 Pedidos</h2>
-                <div id="formPedido" class="hidden">
+                <div id="formPedido" class="hidden form-box">
                     <h3>Novo Pedido</h3>
                     <input type="text" id="pedidoCliente" placeholder="Nome do Cliente">
                     <input type="text" id="pedidoEndereco" placeholder="Endereço de Entrega">
@@ -112,27 +116,25 @@
 
             <div id="abaUsuarios" class="card aba hidden">
                 <h2>👥 Usuários</h2>
-                <div class="grid">
-                    <div>
-                        <h3>Cadastrar Usuário</h3>
-                        <input type="text" id="novoUsuario" placeholder="Usuário">
-                        <input type="password" id="novaSenha" placeholder="Senha">
-                        <input type="text" id="novoNome" placeholder="Nome Completo">
-                        <select id="novoTipo">
-                            <option value="admin">Administrador</option>
-                            <option value="entregador">Entregador</option>
-                            <option value="restaurante">Restaurante</option>
-                        </select>
-                        <button class="success" onclick="cadastrarUsuario()">CADASTRAR</button>
-                    </div>
-                    <div>
-                        <h3>Alterar Minha Senha</h3>
-                        <input type="password" id="senhaAtual" placeholder="Senha Atual">
-                        <input type="password" id="senhaNova" placeholder="Nova Senha">
-                        <button onclick="alterarSenha()">ALTERAR SENHA</button>
-                    </div>
+                <div class="form-box">
+                    <h3>Cadastrar Novo Usuário</h3>
+                    <input type="text" id="novoUsuario" placeholder="Nome de Usuário">
+                    <input type="password" id="novaSenha" placeholder="Senha">
+                    <input type="text" id="novoNome" placeholder="Nome Completo">
+                    <select id="novoTipo">
+                        <option value="admin">Administrador</option>
+                        <option value="entregador">Entregador</option>
+                        <option value="restaurante">Restaurante</option>
+                    </select>
+                    <button class="success" onclick="cadastrarUsuario()" style="width: 100%;">CADASTRAR USUÁRIO</button>
                 </div>
-                <h3>Lista de Usuários</h3>
+                <div class="form-box">
+                    <h3>Alterar Minha Senha</h3>
+                    <input type="password" id="senhaAtual" placeholder="Senha Atual">
+                    <input type="password" id="senhaNova" placeholder="Nova Senha">
+                    <button onclick="alterarSenha()" style="width: 100%;">ALTERAR SENHA</button>
+                </div>
+                <h3>Lista de Usuários Cadastrados</h3>
                 <table id="tabelaUsuarios">
                     <thead><tr><th>Usuário</th><th>Nome</th><th>Tipo</th><th>Status</th></tr></thead>
                     <tbody></tbody>
@@ -174,7 +176,7 @@
                 if (salvo) {
                     const dados = JSON.parse(salvo);
                     usuarioLogado = dados.usuario;
-                    tipoLogado = dados.tipo.toLowerCase(); // CORREÇÃO AQUI
+                    tipoLogado = dados.tipo.toLowerCase();
                     nomeLogado = dados.nome;
                     entrarNoSistema();
                 }
@@ -224,12 +226,12 @@
         window.fazerLogin = () => {
             const user = document.getElementById('loginUsuario').value.trim();
             const pass = document.getElementById('loginSenha').value;
-            if (!user || !pass) return alert('Preencha usuário e senha');
+            if (!user ||!pass) return alert('Preencha usuário e senha');
 
             get(ref(db, `usuarios/${user}`)).then(snap => {
                 if (snap.exists() && snap.val().senha === pass && snap.val().ativo) {
                     usuarioLogado = user;
-                    tipoLogado = snap.val().tipo.toLowerCase(); // CORREÇÃO AQUI
+                    tipoLogado = snap.val().tipo.toLowerCase();
                     nomeLogado = snap.val().nome;
                     localStorage.setItem('usuarioLogado', JSON.stringify({usuario: user, tipo: tipoLogado, nome: nomeLogado}));
                     entrarNoSistema();
@@ -270,7 +272,7 @@
             const abas = document.getElementById('abas');
             abas.innerHTML = '';
             const todasAbas = ['Painel', 'Pedidos', 'Chat'];
-            if (tipoLogado === 'admin') todasAbas.push('Usuários'); // AGORA VAI
+            if (tipoLogado === 'admin') todasAbas.push('Usuários');
             if (tipoLogado === 'restaurante') document.getElementById('formPedido').classList.remove('hidden');
             
             todasAbas.forEach((aba, i) => {
@@ -288,25 +290,25 @@
         };
 
         window.cadastrarUsuario = () => {
-            if (tipoLogado !== 'admin') return alert('Só admin pode cadastrar');
+            if (tipoLogado!== 'admin') return alert('Só admin pode cadastrar');
             const user = document.getElementById('novoUsuario').value.trim();
             const senha = document.getElementById('novaSenha').value;
             const nome = document.getElementById('novoNome').value.trim();
             const tipo = document.getElementById('novoTipo').value;
-            if (!user || !senha || !nome) return alert('Preencha todos os campos');
+            if (!user ||!senha ||!nome) return alert('Preencha todos os campos');
 
             set(ref(db, `usuarios/${user}`), { senha, nome, tipo, ativo: true }).then(() => {
-                alert('Usuário cadastrado!');
+                alert('Usuário cadastrado com sucesso!');
                 document.getElementById('novoUsuario').value = '';
                 document.getElementById('novaSenha').value = '';
                 document.getElementById('novoNome').value = '';
-            });
+            }).catch(err => alert('Erro: ' + err.message));
         };
 
         window.alterarSenha = () => {
             const atual = document.getElementById('senhaAtual').value;
             const nova = document.getElementById('senhaNova').value;
-            if (!atual || !nova) return alert('Preencha as senhas');
+            if (!atual ||!nova) return alert('Preencha as senhas');
 
             get(ref(db, `usuarios/${usuarioLogado}`)).then(snap => {
                 if (snap.val().senha === atual) {
@@ -331,7 +333,7 @@
                         <td>${child.key}</td>
                         <td>${u.nome}</td>
                         <td><span class="badge ${u.tipo.toLowerCase()}">${u.tipo}</span></td>
-                        <td>${u.ativo ? '✅ Ativo' : '❌ Inativo'}</td>
+                        <td>${u.ativo? '✅ Ativo' : '❌ Inativo'}</td>
                     </tr>`;
                 });
             });
@@ -339,12 +341,12 @@
         }
 
         window.criarPedido = () => {
-            if (tipoLogado !== 'restaurante') return alert('Só restaurante cria pedido');
+            if (tipoLogado!== 'restaurante') return alert('Só restaurante cria pedido');
             const cliente = document.getElementById('pedidoCliente').value.trim();
             const endereco = document.getElementById('pedidoEndereco').value.trim();
             const valor = document.getElementById('pedidoValor').value;
             const obs = document.getElementById('pedidoObs').value.trim();
-            if (!cliente || !endereco || !valor) return alert('Preencha cliente, endereço e valor');
+            if (!cliente ||!endereco ||!valor) return alert('Preencha cliente, endereço e valor');
 
             push(ref(db, 'pedidos'), {
                 cliente, endereco, valor, obs,
@@ -386,13 +388,13 @@
                     }
 
                     lista.innerHTML += `
-                        <div class="pedido ${p.status === 'pendente' ? 'novo' : p.status}">
+                        <div class="pedido ${p.status === 'pendente'? 'novo' : p.status}">
                             <h3>Pedido #${id.substring(0,6)} - ${p.cliente}</h3>
                             <p><b>Endereço:</b> ${p.endereco}</p>
                             <p><b>Valor:</b> R$ ${p.valor}</p>
                             <p><b>Status:</b> ${p.status.toUpperCase()}</p>
-                            ${p.entregador ? `<p><b>Entregador:</b> ${p.entregador}</p>` : ''}
-                            ${p.obs ? `<p><b>Obs:</b> ${p.obs}</p>` : ''}
+                            ${p.entregador? `<p><b>Entregador:</b> ${p.entregador}</p>` : ''}
+                            ${p.obs? `<p><b>Obs:</b> ${p.obs}</p>` : ''}
                             ${botoes}
                         </div>
                     `;
@@ -464,7 +466,7 @@
             select.innerHTML = '<option value="">Selecione para conversar</option>';
             get(ref(db, 'usuarios')).then(snap => {
                 snap.forEach(child => {
-                    if (child.key !== usuarioLogado) {
+                    if (child.key!== usuarioLogado) {
                         select.innerHTML += `<option value="${child.key}">${child.val().nome} (${child.val().tipo})</option>`;
                     }
                 });
@@ -482,7 +484,7 @@
                 box.innerHTML = '';
                 snap.forEach(child => {
                     const m = child.val();
-                    const classe = m.remetente === usuarioLogado ? 'minha' : 'outra';
+                    const classe = m.remetente === usuarioLogado? 'minha' : 'outra';
                     box.innerHTML += `<div class="msg ${classe}"><b>${m.nome}:</b> ${m.texto}</div>`;
                 });
                 box.scrollTop = box.scrollHeight;
@@ -493,7 +495,7 @@
         window.enviarMensagem = () => {
             const dest = document.getElementById('chatDestinatario').value;
             const texto = document.getElementById('chatMensagem').value.trim();
-            if (!dest || !texto) return;
+            if (!dest ||!texto) return;
             
             push(ref(db, `chats/${chatAtual}`), {
                 remetente: usuarioLogado,
@@ -512,7 +514,7 @@
                     const chatId = [usuarioLogado, user.key].sort().join('_');
                     const unsub = onChildAdded(ref(db, `chats/${chatId}`), msgSnap => {
                         const m = msgSnap.val();
-                        if (m.remetente !== usuarioLogado && Date.now() - m.timestamp < 3000) {
+                        if (m.remetente!== usuarioLogado && Date.now() - m.timestamp < 3000) {
                             document.getElementById('notificacaoAudio').play().then(()=>{
                                 setTimeout(() => {
                                     document.getElementById('notificacaoAudio').pause();
@@ -527,4 +529,4 @@
         }
     </script>
 </body>
-</html>
+    </html>
