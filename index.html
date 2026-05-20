@@ -1,532 +1,554 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrega Fácil Super</title>
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
-       .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-       .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
-        h1, h2, h3 { margin-bottom: 15px; color: #1a73e8; }
-        h1 { text-align: center; }
-        input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
-        button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin: 5px 5px 5px 0; }
-        button:hover { background: #1557b0; }
-        button.danger { background: #d93025; }
-        button.success { background: #188038; }
-        button.warning { background: #f9ab00; }
-       .hidden { display: none!important; }
-       .grid { display: grid; grid-template-columns: 1fr; gap: 20px; }
-       .grid-3 { display: grid; grid-template-columns: 1fr; gap: 15px; }
-        @media (min-width: 768px) { 
-           .grid { grid-template-columns: 1fr 1fr; }
-           .grid-3 { grid-template-columns: 1fr 1fr 1fr; }
-        }
-       .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; }
-       .conectado { background: #e6f4ea; color: #188038; }
-       .erro { background: #fce8e6; color: #d93025; }
-       .pedido { border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin: 10px 0; }
-       .pedido.novo { border-left: 5px solid #f9ab00; animation: piscar 1s infinite; }
-       .pedido.andamento { border-left: 5px solid #1a73e8; }
-       .pedido.finalizado { border-left: 5px solid #188038; opacity: 0.7; }
-        @keyframes piscar { 50% { background: #fff3cd; } }
-       .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
-       .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; overflow-x: auto; }
-       .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
-       .tab.ativo { border-bottom: 3px solid #1a73e8; font-weight: bold; }
-       .chat-box { height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
-       .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; word-break: break-word; }
-       .msg.minha { background: #d2e3fc; margin-left: auto; }
-       .msg.outra { background: #e8eaed; }
-       .notificacao { position: fixed; top: 20px; right: 20px; background: #d93025; color: white; padding: 15px 20px; border-radius: 8px; z-index: 9999; animation: tremer 0.5s infinite; }
-        @keyframes tremer { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; overflow-x: auto; display: block; }
-        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; white-space: nowrap; }
-        th { background: #f1f3f4; }
-       .badge { padding: 3px 8px; border-radius: 12px; font-size: 12px; color: white; }
-       .badge.admin { background: #d93025; }
-       .badge.entregador { background: #1a73e8; }
-       .badge.restaurante { background: #188038; }
-       .form-box { border: 2px solid #1a73e8; padding: 15px; border-radius: 8px; margin-bottom: 20px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Entrega Fácil Super</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
+    body{background:#f5f5f5}
+.container{max-width:500px;margin:0 auto;background:#fff;min-height:100vh}
+.login{padding:40px 20px;text-align:center}
+.login h1{color:#FF6B00;margin-bottom:30px;font-size:28px}
+.login input,.login select{width:100%;padding:12px;margin:8px 0;border:2px solid #ddd;border-radius:8px;font-size:16px}
+.btn{background:#FF6B00;color:#fff;border:none;padding:14px 30px;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+.btn:active{transform:scale(0.98)}
+.btn-small{padding:8px 12px;font-size:14px;width:auto;margin:5px}
+.btn-danger{background:#dc3545}
+.btn-success{background:#28a745}
+.header{background:#FF6B00;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
+.header h2{font-size:20px}
+.tabs{display:flex;background:#eee}
+.tab{flex:1;padding:12px;text-align:center;cursor:pointer;border:none;background:#eee;font-weight:600}
+.tab.active{background:#fff;color:#FF6B00;border-bottom:3px solid #FF6B00}
+.content{padding:20px}
+.card{background:#fff;border:2px solid #eee;border-radius:12px;padding:15px;margin-bottom:15px}
+.card h3{color:#333;margin-bottom:8px}
+.card p{color:#666;margin:4px 0;font-size:14px}
+.status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px}
+.status.pendente{background:#fff3cd;color:#856404}
+.status.aceito{background:#d1ecf1;color:#0c5460}
+.status.caminho{background:#d4edda;color:#155724}
+.status.entregue{background:#e2e3e5;color:#383d41}
+.input-group{margin:15px 0}
+.input-group label{display:block;margin-bottom:5px;font-weight:600;color:#333}
+.input-group input,.input-group textarea,.input-group select{width:100%;padding:10px;border:2px solid #ddd;border-radius:8px;font-size:15px}
+.firebase-status{text-align:center;padding:8px;font-size:13px;background:#d4edda;color:#155724}
+.firebase-status.error{background:#f8d7da;color:#721c24}
+.chat-box{border:2px solid #ddd;border-radius:8px;height:200px;overflow-y:auto;padding:10px;margin:10px 0;background:#fafafa}
+.chat-msg{margin:5px 0;padding:8px;border-radius:8px;max-width:80%}
+.chat-msg.eu{background:#FF6B00;color:#fff;margin-left:auto}
+.chat-msg.outro{background:#e9ecef;color:#333}
+.modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999}
+.modal.active{display:flex;align-items:center;justify-content:center}
+.modal-content{background:#fff;padding:25px;border-radius:12px;width:90%;max-width:400px}
+.hidden{display:none}
+.notif-bar{background:#ffc107;color:#333;padding:10px;text-align:center;font-size:14px;font-weight:bold;cursor:pointer}
+  
+.card-entrega{background:#2d2d2d;color:#fff;border-radius:16px;padding:0;overflow:hidden;margin-bottom:15px;border:none}
+.card-entrega-header{background:#1a1a1a;padding:15px}
+.tag{background:#FF6B00;color:#fff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block}
+.card-entrega-valor{font-size:36px;font-weight:bold;margin:10px 0 0 0}
+.card-entrega-body{padding:15px}
+.linha-amarela{height:3px;background:#FFC107;margin:0}
+.rota{margin:15px 0}
+.rota-item{display:flex;align-items:flex-start;margin:10px 0}
+.rota-bolinha{width:12px;height:12px;border-radius:50%;margin-right:12px;margin-top:4px;flex-shrink:0}
+.rota-bolinha.amarelo{background:#FFC107}
+.rota-bolinha.laranja{background:#FF6B00}
+.rota-endereco{flex:1}
+.rota-endereco b{display:block;font-size:14px;margin-bottom:2px}
+.rota-endereco span{font-size:13px;color:#bbb}
+.btn-aceitar{background:#FFC107;color:#1a1a1a;border:none;padding:16px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
+.btn-aceitar:active{transform:scale(0.98)}
+  </style>
 </head>
 <body>
-    <audio id="notificacaoAudio" loop>
-        <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
-    </audio>
-
-    <div class="container">
-        <div id="telaLogin" class="card" style="max-width: 400px; margin: 50px auto;">
-            <h1>🚀 Entrega Fácil Super</h1>
-            <div id="statusConexao" class="status">🔄 Conectando...</div>
-            <input type="text" id="loginUsuario" placeholder="Usuário">
-            <input type="password" id="loginSenha" placeholder="Senha">
-            <button onclick="fazerLogin()" style="width: 100%;">ENTRAR</button>
-            <div id="criarAdminInicial" class="hidden" style="margin-top: 15px; text-align: center;">
-                <button class="success" onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
-            </div>
-        </div>
-
-        <div id="sistema" class="hidden">
-            <div class="card">
-                <div class="header">
-                    <h1>🚀 Entrega Fácil Super</h1>
-                    <div>
-                        <span id="nomeUsuarioLogado"></span>
-                        <span id="tipoUsuarioLogado" class="badge"></span>
-                        <button class="danger" onclick="logout()">SAIR</button>
-                    </div>
-                </div>
-                <div class="tabs" id="abas"></div>
-            </div>
-
-            <div id="abaPainel" class="card aba">
-                <h2>📊 Painel</h2>
-                <div class="grid-3">
-                    <div class="card"><h3>Pedidos Pendentes</h3><h1 id="totalPendentes">0</h1></div>
-                    <div class="card"><h3>Em Andamento</h3><h1 id="totalAndamento">0</h1></div>
-                    <div class="card"><h3>Finalizados Hoje</h3><h1 id="totalFinalizados">0</h1></div>
-                </div>
-            </div>
-
-            <div id="abaPedidos" class="card aba hidden">
-                <h2>📦 Pedidos</h2>
-                <div id="formPedido" class="hidden form-box">
-                    <h3>Novo Pedido</h3>
-                    <input type="text" id="pedidoCliente" placeholder="Nome do Cliente">
-                    <input type="text" id="pedidoEndereco" placeholder="Endereço de Entrega">
-                    <input type="number" id="pedidoValor" placeholder="Valor R$">
-                    <textarea id="pedidoObs" placeholder="Observações"></textarea>
-                    <button class="success" onclick="criarPedido()">CRIAR PEDIDO</button>
-                </div>
-                <div id="listaPedidos"></div>
-            </div>
-
-            <div id="abaChat" class="card aba hidden">
-                <h2>💬 Chat</h2>
-                <select id="chatDestinatario" onchange="carregarChat()">
-                    <option value="">Selecione para conversar</option>
-                </select>
-                <div id="chatBox" class="chat-box"></div>
-                <input type="text" id="chatMensagem" placeholder="Digite sua mensagem" onkeypress="if(event.key==='Enter') enviarMensagem()">
-                <button onclick="enviarMensagem()">ENVIAR</button>
-            </div>
-
-            <div id="abaUsuarios" class="card aba hidden">
-                <h2>👥 Usuários</h2>
-                <div class="form-box">
-                    <h3>Cadastrar Novo Usuário</h3>
-                    <input type="text" id="novoUsuario" placeholder="Nome de Usuário">
-                    <input type="password" id="novaSenha" placeholder="Senha">
-                    <input type="text" id="novoNome" placeholder="Nome Completo">
-                    <select id="novoTipo">
-                        <option value="admin">Administrador</option>
-                        <option value="entregador">Entregador</option>
-                        <option value="restaurante">Restaurante</option>
-                    </select>
-                    <button class="success" onclick="cadastrarUsuario()" style="width: 100%;">CADASTRAR USUÁRIO</button>
-                </div>
-                <div class="form-box">
-                    <h3>Alterar Minha Senha</h3>
-                    <input type="password" id="senhaAtual" placeholder="Senha Atual">
-                    <input type="password" id="senhaNova" placeholder="Nova Senha">
-                    <button onclick="alterarSenha()" style="width: 100%;">ALTERAR SENHA</button>
-                </div>
-                <h3>Lista de Usuários Cadastrados</h3>
-                <table id="tabelaUsuarios">
-                    <thead><tr><th>Usuário</th><th>Nome</th><th>Tipo</th><th>Status</th></tr></thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </div>
+  <div class="container">
+    <div id="loginScreen" class="login">
+      <h1>🚚 Entrega Fácil Super</h1>
+      <div id="firebaseStatus" class="firebase-status">🔄 Conectando...</div>
+      <select id="tipoLogin">
+        <option value="">Selecione o tipo</option>
+        <option value="admin">Administrador</option>
+        <option value="restaurante">Restaurante</option>
+        <option value="entregador">Entregador</option>
+      </select>
+      <input type="text" id="usuario" placeholder="Usuário">
+      <input type="password" id="senha" placeholder="Senha">
+      <button class="btn" onclick="logar()">ENTRAR</button>
+      <button class="btn" id="btnCriarAdmin" style="background:#28a745;display:none;margin-top:20px" onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
     </div>
 
-    <script type="module">
-        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getDatabase, ref, get, set, push, onValue, update, remove, onChildAdded } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+    <div id="appScreen" class="hidden">
+      <div id="notifBar" class="notif-bar hidden">🔔 Clique aqui para ativar notificações</div>
+      <div class="header">
+        <h2 id="nomeUser">Olá</h2>
+        <button class="btn-small" onclick="sair()" style="background:rgba(255,255,255,0.2)">Sair</button>
+      </div>
+      <div id="firebaseStatusApp" class="firebase-status">✅ Conectado ao Firebase</div>
+      <div class="tabs" id="tabs"></div>
+      <div class="content" id="content"></div>
+    </div>
+  </div>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyA_gBrD7Ty0Obw6qcGpbJ9HmI7Ydnv6FMw",
-            authDomain: "entrega-facil-super.firebaseapp.com",
-            databaseURL: "https://entrega-facil-super-default-rtdb.firebaseio.com",
-            projectId: "entrega-facil-super",
-            storageBucket: "entrega-facil-super.appspot.com",
-            messagingSenderId: "428684283332",
-            appId: "1:428684283332:web:32162cd744695fba10a891"
-        };
+  <div id="modal" class="modal">
+    <div class="modal-content" id="modalContent"></div>
+  </div>
 
-        let app, db;
-        let usuarioLogado = null;
-        let tipoLogado = null;
-        let nomeLogado = null;
-        let audioTocando = false;
-        let timeoutNotificacao = null;
-        let chatAtual = null;
-        let ouvintes = [];
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+    import { getDatabase, ref, set, onValue, push, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                app = initializeApp(firebaseConfig);
-                db = getDatabase(app);
-                testarConexao();
-                
-                const salvo = localStorage.getItem('usuarioLogado');
-                if (salvo) {
-                    const dados = JSON.parse(salvo);
-                    usuarioLogado = dados.usuario;
-                    tipoLogado = dados.tipo.toLowerCase();
-                    nomeLogado = dados.nome;
-                    entrarNoSistema();
-                }
-            } catch (e) {
-                document.getElementById('statusConexao').className = 'status erro';
-                document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + e.message;
-            }
+    const firebaseConfig = {
+      apiKey: "AIzaSyA_gBrD7Ty0Obw6qcGpbJ9HmI7Ydnv6FMw",
+      authDomain: "entrega-facil-super.firebaseapp.com",
+      databaseURL: "https://entrega-facil-super-default-rtdb.firebaseio.com",
+      projectId: "entrega-facil-super",
+      storageBucket: "entrega-facil-super.appspot.com",
+      messagingSenderId: "428684283332",
+      appId: "1:428684283332:web:32162cd744695fba10a891"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getDatabase(app);
+    
+    let userAtual = null;
+    let pedidos = {};
+    let usuarios = {};
+    let chats = {};
+    let audioNotificacao = new Audio('https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3');
+    audioNotificacao.loop = true;
+    let audioTocando = false;
+    let timeoutNotificacao = null;
+
+    window.criarAdminInicial = () => {
+      const id = Date.now().toString();
+      set(ref(db,'usuarios/'+id),{id:id,n:'Admin',u:'Admin',s:'123',t:'admin'});
+      alert('Admin criado! Usuário: Admin | Senha: 123');
+      document.getElementById('btnCriarAdmin').style.display='none';
+    }
+
+    function pedirPermissaoNotif(){
+      if(!('Notification' in window)) return;
+      if(Notification.permission === 'default'){
+        document.getElementById('notifBar').classList.remove('hidden');
+        document.getElementById('notifBar').onclick = () => {
+          Notification.requestPermission().then(perm => {
+            if(perm === 'granted') document.getElementById('notifBar').classList.add('hidden');
+          });
+        }
+      }
+    }
+
+    function notificar(titulo, corpo){
+      audioNotificacao.play();
+      if(!audioTocando){
+        audioTocando = true;
+        timeoutNotificacao = setTimeout(()=>{
+          audioNotificacao.pause();
+          audioNotificacao.currentTime = 0;
+          audioTocando = false;
+        }, 25000);
+      }
+      if(!('Notification' in window) || Notification.permission!== 'granted') return;
+      new Notification(titulo, {
+        body: corpo,
+        icon: 'https://cdn-icons-png.flaticon.com/512/1048/1048315.png',
+        vibrate: [200, 100, 200]
+      });
+    }
+
+    function pararNotificacao(){
+      audioNotificacao.pause();
+      audioNotificacao.currentTime = 0;
+      audioTocando = false;
+      clearTimeout(timeoutNotificacao);
+    }
+
+    window.logar = () => {
+      const tipo = document.getElementById('tipoLogin').value;
+      const u = document.getElementById('usuario').value;
+      const s = document.getElementById('senha').value;
+      if(!tipo||!u||!s) return alert('Preencha todos os campos');
+      
+      const user = Object.values(usuarios).find(us => us.u===u && us.s===s && us.t.toLowerCase()===tipo);
+      if(!user) return alert('Usuário ou senha inválidos');
+      if(!user.id) return alert('Usuário antigo sem ID. Apague e crie novamente pelo painel admin.');
+      
+      userAtual = user;
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('appScreen').classList.remove('hidden');
+      document.getElementById('nomeUser').textContent = `Olá, ${user.n}`;
+      
+      if(user.t.toLowerCase()==='entregador') pedirPermissaoNotif();
+      carregarApp();
+    }
+
+    window.sair = () => {
+      userAtual = null;
+      pararNotificacao();
+      document.getElementById('appScreen').classList.add('hidden');
+      document.getElementById('loginScreen').classList.remove('hidden');
+    }
+
+    function carregarApp(){
+      const tabs = document.getElementById('tabs');
+      const tipo = userAtual.t.toLowerCase();
+      if(tipo==='admin') tabs.innerHTML = `<button class="tab active" onclick="mudarAba(0)">Usuários</button><button class="tab" onclick="mudarAba(1)">Pedidos</button>`;
+      else if(tipo==='restaurante') tabs.innerHTML = `<button class="tab active" onclick="mudarAba(0)">Novo Pedido</button><button class="tab" onclick="mudarAba(1)">Meus Pedidos</button><button class="tab" onclick="mudarAba(2)">Histórico</button>`;
+      else tabs.innerHTML = `<button class="tab active" onclick="mudarAba(0)">Disponíveis</button><button class="tab" onclick="mudarAba(1)">Minhas Entregas</button><button class="tab" onclick="mudarAba(2)">Histórico</button>`;
+      mudarAba(0);
+    }
+
+    window.mudarAba = (i) => {
+      document.querySelectorAll('.tab').forEach((t,idx)=>t.classList.toggle('active',idx===i));
+      const tipo = userAtual.t.toLowerCase();
+      if(tipo==='admin') i===0?abaUsuarios():abaPedidosAdmin();
+      else if(tipo==='restaurante') i===0?abaNovoPedido():i===1?abaPedidosRest():abaHistorico();
+      else i===0?abaDisponiveis():i===1?abaMinhasEntregas():abaHistorico();
+    }
+
+    function abaUsuarios(){
+      let html = `<button class="btn" onclick="modalNovoUser()">+ Novo Usuário</button>
+      <button class="btn" onclick="modalAlterarSenha()" style="background:#6c757d;margin-top:10px">🔑 Alterar Minha Senha</button>
+      <div style="margin-top:20px">`;
+      Object.values(usuarios).forEach(u=>{
+        html += `<div class="card"><h3>${u.n}</h3><p>Tipo: ${u.t}</p><p>Usuário: ${u.u}</p><button class="btn-small btn-danger" onclick="delUser('${u.id}')">Excluir</button></div>`;
+      });
+      document.getElementById('content').innerHTML = html+'</div>';
+    }
+
+    window.modalAlterarSenha = () => {
+      document.getElementById('modalContent').innerHTML = `
+        <h3>Alterar Minha Senha</h3>
+        <div class="input-group"><label>Senha Atual</label><input id="senhaAtual" type="password"></div>
+        <div class="input-group"><label>Nova Senha</label><input id="senhaNova" type="password"></div>
+        <button class="btn" onclick="alterarSenha()">SALVAR</button>
+        <button class="btn" style="background:#6c757d;margin-top:5px" onclick="fecharModal()">Cancelar</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    window.alterarSenha = () => {
+      const atual = document.getElementById('senhaAtual').value;
+      const nova = document.getElementById('senhaNova').value;
+      if(!atual||!nova) return alert('Preencha as senhas');
+      if(userAtual.s!==atual) return alert('Senha atual incorreta');
+      update(ref(db,'usuarios/'+userAtual.id),{s:nova});
+      userAtual.s = nova;
+      alert('Senha alterada com sucesso!');
+      fecharModal();
+    }
+
+    window.modalNovoUser = () => {
+      document.getElementById('modalContent').innerHTML = `
+        <h3>Novo Usuário</h3>
+        <div class="input-group"><label>Nome</label><input id="novoNome"></div>
+        <div class="input-group"><label>Usuário</label><input id="novoUser"></div>
+        <div class="input-group"><label>Senha</label><input id="novaSenha" type="password"></div>
+        <div class="input-group"><label>Tipo</label><select id="novoTipo"><option value="restaurante">Restaurante</option><option value="entregador">Entregador</option><option value="admin">Administrador</option></select></div>
+        <button class="btn" onclick="criarUser()">Criar</button>
+        <button class="btn" style="background:#6c757d;margin-top:5px" onclick="fecharModal()">Cancelar</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+    }
+
+    window.criarUser = () => {
+      const n = document.getElementById('novoNome').value;
+      const u = document.getElementById('novoUser').value;
+      const s = document.getElementById('novaSenha').value;
+      const t = document.getElementById('novoTipo').value;
+      if(!n||!u||!s) return alert('Preencha tudo');
+      const id = Date.now().toString();
+      set(ref(db,'usuarios/'+id),{id,n,u,s,t});
+      fecharModal();
+    }
+
+    window.delUser = (id) => {
+      if(confirm('Excluir usuário?')) remove(ref(db,'usuarios/'+id));
+    }
+
+    function abaNovoPedido(){
+      document.getElementById('content').innerHTML = `
+        <div class="input-group"><label>Nome do Cliente</label><input id="cliNome"></div>
+        <div class="input-group"><label>Telefone</label><input id="cliTel"></div>
+        <div class="input-group"><label>Endereço de Entrega</label><textarea id="cliEnd" rows="2"></textarea></div>
+        <div class="input-group"><label>Valor do Pedido R$</label><input id="cliValor" type="number" step="0.01"></div>
+        <div class="input-group"><label>Taxa de Entrega R$</label><input id="cliTaxa" type="number" step="0.01" value="5.00"></div>
+        <div class="input-group"><label>Forma de Pagamento</label><select id="cliPag"><option value="PIX">PIX</option><option value="DINHEIRO">DINHEIRO</option><option value="CARTÃO">CARTÃO</option></select></div>
+        <div class="input-group"><label>Endereço do Restaurante <button class="btn-small" onclick="configEnd()">⚙️</button></label><input id="restEnd" value="${userAtual.endereco||''}" placeholder="Configure o endereço"></div>
+        <button class="btn" onclick="criarPedido()">CRIAR PEDIDO</button>
+      `;
+    }
+
+    window.configEnd = () => {
+      const end = prompt('Endereço do seu restaurante:',userAtual.endereco||'');
+      if(end) update(ref(db,'usuarios/'+userAtual.id),{endereco:end});
+    }
+
+    window.criarPedido = () => {
+      if(!userAtual?.id) return alert('Erro: usuário sem ID. Faça logout e login novamente');
+      const nome = document.getElementById('cliNome').value;
+      const tel = document.getElementById('cliTel').value;
+      const end = document.getElementById('cliEnd').value;
+      const valor = parseFloat(document.getElementById('cliValor').value) || 0;
+      const taxa = parseFloat(document.getElementById('cliTaxa').value) || 0;
+      const pag = document.getElementById('cliPag').value;
+      const restEnd = document.getElementById('restEnd').value;
+      if(!nome||!tel||!end||!valor) return alert('Preencha todos os campos obrigatórios');
+      const id = Date.now().toString();
+      set(ref(db,'pedidos/'+id),{
+        id,
+        restaurante:userAtual.n,
+        restauranteId:userAtual.id,
+        cliente:nome,
+        telefone:tel,
+        endereco:end,
+        valor,
+        taxa,
+        pagamento:pag,
+        endRestaurante:restEnd,
+        status:'pendente',
+        data:new Date().toISOString()
+      });
+      alert('Pedido criado!');
+      mudarAba(1);
+    }
+
+    function abaPedidosRest(){
+      let html = '';
+      const meusPedidos = Object.values(pedidos).filter(p=>p.restauranteId===userAtual.id && p.status!=='entregue').reverse();
+      if(meusPedidos.length===0) html='<p style="text-align:center;color:#666">Nenhum pedido ativo</p>';
+      meusPedidos.forEach(p=>{
+        const v = parseFloat(p.valor) || 0;
+        const t = parseFloat(p.taxa) || 0;
+        html += `<div class="card">
+          <h3>${p.cliente}</h3>
+          <p>📞 ${p.telefone}</p>
+          <p>📍 ${p.endereco}</p>
+          <p>💰 Pedido: R$ ${v.toFixed(2)} | Entrega: R$ ${t.toFixed(2)}</p>
+          <p>💳 ${p.pagamento}</p>
+          <span class="status ${p.status}">${p.status.toUpperCase()}</span>
+          ${p.entregador?`<p>🚚 ${p.entregador}</p>`:''}
+          <button class="btn-small" onclick="abrirChat('${p.id}')">💬 Chat</button>
+        </div>`;
+      });
+      document.getElementById('content').innerHTML = html;
+    }
+
+    function abaDisponiveis(){
+      let html = '';
+      const disponiveis = Object.values(pedidos).filter(p=>p.status==='pendente').reverse();
+      if(disponiveis.length===0) html='<p style="text-align:center;color:#666">Nenhum pedido disponível</p>';
+      disponiveis.forEach(p=>{
+        const taxa = parseFloat(p.taxa) || 0;
+        html += `<div class="card-entrega">
+          <div class="card-entrega-header">
+            <span class="tag">🍽️ Entrega Food</span>
+            <div class="card-entrega-valor">R$ ${taxa.toFixed(2)}</div>
+          </div>
+          <div class="linha-amarela"></div>
+          <div class="card-entrega-body">
+            <div class="rota">
+              <div class="rota-item">
+                <div class="rota-bolinha amarelo"></div>
+                <div class="rota-endereco">
+                  <b>${p.restaurante}</b>
+                  <span>${p.endRestaurante||'Endereço não informado'}</span>
+                </div>
+              </div>
+              <div class="rota-item">
+                <div class="rota-bolinha laranja"></div>
+                <div class="rota-endereco">
+                  <b>${p.cliente}</b>
+                  <span>${p.endereco}</span>
+                </div>
+              </div>
+            </div>
+            <p style="font-size:13px;color:#bbb;margin-bottom:10px">💰 Pedido: R$ ${(parseFloat(p.valor)||0).toFixed(2)} | ${p.pagamento}</p>
+            <button class="btn-aceitar" onclick="aceitarPedido('${p.id}')">Aceitar pedido</button>
+          </div>
+        </div>`;
+      });
+      document.getElementById('content').innerHTML = html;
+    }
+
+    window.aceitarPedido = (id) => {
+      update(ref(db,'pedidos/'+id),{status:'aceito',entregador:userAtual.n,entregadorId:userAtual.id});
+      pararNotificacao();
+      notificar('Pedido aceito!', 'Você aceitou uma nova entrega');
+      mudarAba(1);
+    }
+
+    function abaMinhasEntregas(){
+      let html = '';
+      const minhas = Object.values(pedidos).filter(p=>p.entregadorId===userAtual.id && p.status!=='entregue').reverse();
+      if(minhas.length===0) html='<p style="text-align:center;color:#666">Nenhuma entrega ativa</p>';
+      minhas.forEach(p=>{
+        const v = parseFloat(p.valor) || 0;
+        const t = parseFloat(p.taxa) || 0;
+        html += `<div class="card">
+          <h3>${p.restaurante}</h3>
+          <p>👤 ${p.cliente} - ${p.telefone}</p>
+          <p>📍 Retirar: ${p.endRestaurante||'Ver com restaurante'}</p>
+          <p>📍 Entregar: ${p.endereco}</p>
+          <p>💰 Pedido: R$ ${v.toFixed(2)} | Entrega: R$ ${t.toFixed(2)}</p>
+          <p>💳 ${p.pagamento}</p>
+          <span class="status ${p.status}">${p.status.toUpperCase()}</span>
+          <button class="btn-small" onclick="abrirMaps('${p.endereco}')">📍 GPS Entrega</button>
+          <button class="btn-small" onclick="abrirMaps('${p.endRestaurante}')">📍 GPS Restaurante</button>
+          <button class="btn-small" onclick="abrirChat('${p.id}')">💬 Chat</button>
+          ${p.status==='aceito'?`<button class="btn btn-small" onclick="mudarStatus('${p.id}','caminho')">INICIAR ENTREGA</button>`:''}
+          ${p.status==='caminho'?`<button class="btn btn-success btn-small" onclick="mudarStatus('${p.id}','entregue')">FINALIZAR</button>`:''}
+        </div>`;
+      });
+      document.getElementById('content').innerHTML = html;
+    }
+
+    window.abrirMaps = (end) => {
+      if(!end) return alert('Endereço não informado');
+      window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(end)}`);
+    }
+
+    window.mudarStatus = (id,st) => {
+      update(ref(db,'pedidos/'+id),{status:st});
+      if(st==='entregue') {
+        notificar('Entrega finalizada!', 'Parabéns!');
+        pararNotificacao();
+      }
+    }
+
+    window.abrirChat = (pedidoId) => {
+      const pedido = pedidos[pedidoId];
+      const chatId = pedidoId;
+      document.getElementById('modalContent').innerHTML = `
+        <h3>Chat - ${pedido.cliente}</h3>
+        <div class="chat-box" id="chatBox"></div>
+        <div style="display:flex;gap:5px">
+          <input id="msgInput" placeholder="Digite..." style="flex:1;padding:10px;border:2px solid #ddd;border-radius:8px">
+          <button class="btn" style="width:auto;padding:10px 20px" onclick="enviarMsg('${chatId}')">Enviar</button>
+        </div>
+        <button class="btn" style="background:#6c757d;margin-top:10px" onclick="fecharModal()">Fechar</button>
+      `;
+      document.getElementById('modal').classList.add('active');
+      carregarChat(chatId);
+    }
+
+    function carregarChat(chatId){
+      const box = document.getElementById('chatBox');
+      if(!box) return;
+      onValue(ref(db,'chats/'+chatId),(snap)=>{
+        const msgs = snap.val()||{};
+        let html = '';
+        Object.values(msgs).forEach(m=>{
+          const classe = m.remetenteId===userAtual.id?'eu':'outro';
+          html += `<div class="chat-msg ${classe}"><b>${m.remetente}:</b> ${m.texto}</div>`;
         });
+        box.innerHTML = html;
+        box.scrollTop = box.scrollHeight;
+      });
+    }
 
-        function testarConexao() {
-            get(ref(db, '/')).then(() => {
-                document.getElementById('statusConexao').className = 'status conectado';
-                document.getElementById('statusConexao').innerHTML = '✅ Conectado ao Firebase';
-                verificarAdminInicial();
-            }).catch(err => {
-                document.getElementById('statusConexao').className = 'status erro';
-                document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + err.code;
-            });
-        }
+    window.enviarMsg = (chatId) => {
+      const input = document.getElementById('msgInput');
+      const texto = input.value.trim();
+      if(!texto) return;
+      push(ref(db,'chats/'+chatId),{
+        remetente:userAtual.n,
+        remetenteId:userAtual.id,
+        texto,
+        data:new Date().toISOString()
+      });
+      input.value='';
+      notificar('Nova mensagem', texto);
+    }
 
-        function verificarAdminInicial() {
-            get(ref(db, 'usuarios/Admin')).then(snap => {
-                if (!snap.exists()) {
-                    document.getElementById('criarAdminInicial').classList.remove('hidden');
-                } else {
-                    document.getElementById('criarAdminInicial').classList.add('hidden');
-                }
-            });
-        }
+    function abaHistorico(){
+      let html = '';
+      const tipo = userAtual.t.toLowerCase();
+      let lista = Object.values(pedidos).filter(p=>{
+        if(tipo==='restaurante') return p.restauranteId===userAtual.id && p.status==='entregue';
+        if(tipo==='entregador') return p.entregadorId===userAtual.id && p.status==='entregue';
+        return false;
+      }).reverse();
+      const total = lista.reduce((s,p)=>s+(parseFloat(p.taxa)||0),0);
+      html += `<div class="card" style="background:#d4edda"><h3>Total ganho: R$ ${total.toFixed(2)}</h3><p>${lista.length} entregas</p></div>`;
+      lista.forEach(p=>{
+        const v = parseFloat(p.valor) || 0;
+        const t = parseFloat(p.taxa) || 0;
+        html += `<div class="card">
+          <h3>${tipo==='restaurante'?p.cliente:p.restaurante}</h3>
+          <p>💰 Pedido: R$ ${v.toFixed(2)} | Entrega: R$ ${t.toFixed(2)}</p>
+          <p style="font-size:12px;color:#999">${new Date(p.data).toLocaleString('pt-BR')}</p>
+        </div>`;
+      });
+      document.getElementById('content').innerHTML = html||'<p style="text-align:center;color:#666">Nenhum histórico</p>';
+    }
 
-        window.criarAdminInicial = () => {
-            set(ref(db, 'usuarios/Admin'), {
-                senha: '123', 
-                tipo: 'admin', 
-                nome: 'Administrador', 
-                ativo: true
-            }).then(() => {
-                alert('Admin criado!\nUsuário: Admin\nSenha: 123');
-                document.getElementById('loginUsuario').value = 'Admin';
-                document.getElementById('loginSenha').value = '123';
-                verificarAdminInicial();
-            }).catch(err => {
-                alert('Erro ao criar admin: ' + err.message);
-            });
-        };
+    function abaPedidosAdmin(){
+      let html = '';
+      Object.values(pedidos).reverse().forEach(p=>{
+        const v = parseFloat(p.valor) || 0;
+        const t = parseFloat(p.taxa) || 0;
+        html += `<div class="card">
+          <h3>${p.restaurante} → ${p.cliente}</h3>
+          <p>💰 R$ ${v.toFixed(2)} | Entrega: R$ ${t.toFixed(2)}</p>
+          <span class="status ${p.status}">${p.status.toUpperCase()}</span>
+          ${p.entregador?`<p>🚚 ${p.entregador}</p>`:''}
+        </div>`;
+      });
+      document.getElementById('content').innerHTML = html||'<p style="text-align:center;color:#666">Nenhum pedido</p>';
+    }
 
-        window.fazerLogin = () => {
-            const user = document.getElementById('loginUsuario').value.trim();
-            const pass = document.getElementById('loginSenha').value;
-            if (!user ||!pass) return alert('Preencha usuário e senha');
+    window.fecharModal = () => document.getElementById('modal').classList.remove('active');
 
-            get(ref(db, `usuarios/${user}`)).then(snap => {
-                if (snap.exists() && snap.val().senha === pass && snap.val().ativo) {
-                    usuarioLogado = user;
-                    tipoLogado = snap.val().tipo.toLowerCase();
-                    nomeLogado = snap.val().nome;
-                    localStorage.setItem('usuarioLogado', JSON.stringify({usuario: user, tipo: tipoLogado, nome: nomeLogado}));
-                    entrarNoSistema();
-                } else {
-                    alert('Usuário ou senha inválidos');
-                }
-            }).catch(() => alert('Erro ao conectar. Tente novamente.'));
-        };
+    onValue(ref(db,'usuarios'),(snap)=>{
+      usuarios = snap.val()||{};
+      document.getElementById('firebaseStatus').className='firebase-status';
+      document.getElementById('firebaseStatus').textContent='✅ Conectado ao Firebase';
+      document.getElementById('firebaseStatusApp').className='firebase-status';
+      document.getElementById('firebaseStatusApp').textContent='✅ Conectado ao Firebase';
+      
+      if(Object.keys(usuarios).length === 0){
+        document.getElementById('btnCriarAdmin').style.display='block';
+      } else {
+        document.getElementById('btnCriarAdmin').style.display='none';
+      }
+    },()=>{
+      document.getElementById('firebaseStatus').className='firebase-status error';
+      document.getElementById('firebaseStatus').textContent='❌ Erro ao conectar';
+    });
 
-        function entrarNoSistema() {
-            document.getElementById('telaLogin').classList.add('hidden');
-            document.getElementById('sistema').classList.remove('hidden');
-            document.getElementById('nomeUsuarioLogado').innerText = nomeLogado;
-            const badge = document.getElementById('tipoUsuarioLogado');
-            badge.innerText = tipoLogado.toUpperCase();
-            badge.className = `badge ${tipoLogado}`;
-            montarAbas();
-            mostrarAba('Painel');
-            iniciarOuvintes();
-        }
+    onValue(ref(db,'pedidos'),(snap)=>{
+      const novos = snap.val()||{};
+      const antes = Object.keys(pedidos).length;
+      const depois = Object.keys(novos).length;
+      
+      if(userAtual && userAtual.t.toLowerCase()==='entregador' && depois>antes){
+        const novosPedidos = Object.values(novos).filter(p=>!pedidos[p.id] && p.status==='pendente');
+        if(novosPedidos.length>0) notificar('🚚 Novo pedido disponível!', `${novosPedidos[0].restaurante} - R$ ${(parseFloat(novosPedidos[0].taxa)||0).toFixed(2)}`);
+      }
+      
+      pedidos = novos;
+      if(userAtual) mudarAba(document.querySelector('.tab.active')?Array.from(document.querySelectorAll('.tab')).indexOf(document.querySelector('.tab.active')):0);
+    });
 
-        function iniciarOuvintes() {
-            ouvintes.forEach(unsub => unsub());
-            ouvintes = [];
-            escutarPedidos();
-            escutarChat();
-            carregarUsuarios();
-            carregarPedidos();
-        }
-
-        window.logout = () => {
-            localStorage.removeItem('usuarioLogado');
-            ouvintes.forEach(unsub => unsub());
-            location.reload();
-        };
-
-        function montarAbas() {
-            const abas = document.getElementById('abas');
-            abas.innerHTML = '';
-            const todasAbas = ['Painel', 'Pedidos', 'Chat'];
-            if (tipoLogado === 'admin') todasAbas.push('Usuários');
-            if (tipoLogado === 'restaurante') document.getElementById('formPedido').classList.remove('hidden');
-            
-            todasAbas.forEach((aba, i) => {
-                abas.innerHTML += `<div class="tab ${i===0?'ativo':''}" onclick="mostrarAba('${aba}', this)">${aba}</div>`;
-            });
-        }
-
-        window.mostrarAba = (nome, el) => {
-            document.querySelectorAll('.aba').forEach(a => a.classList.add('hidden'));
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
-            document.getElementById(`aba${nome}`).classList.remove('hidden');
-            if(el) el.classList.add('ativo');
-            else document.querySelector('.tab').classList.add('ativo');
-            if (nome === 'Chat') carregarDestinatarios();
-        };
-
-        window.cadastrarUsuario = () => {
-            if (tipoLogado!== 'admin') return alert('Só admin pode cadastrar');
-            const user = document.getElementById('novoUsuario').value.trim();
-            const senha = document.getElementById('novaSenha').value;
-            const nome = document.getElementById('novoNome').value.trim();
-            const tipo = document.getElementById('novoTipo').value;
-            if (!user ||!senha ||!nome) return alert('Preencha todos os campos');
-
-            set(ref(db, `usuarios/${user}`), { senha, nome, tipo, ativo: true }).then(() => {
-                alert('Usuário cadastrado com sucesso!');
-                document.getElementById('novoUsuario').value = '';
-                document.getElementById('novaSenha').value = '';
-                document.getElementById('novoNome').value = '';
-            }).catch(err => alert('Erro: ' + err.message));
-        };
-
-        window.alterarSenha = () => {
-            const atual = document.getElementById('senhaAtual').value;
-            const nova = document.getElementById('senhaNova').value;
-            if (!atual ||!nova) return alert('Preencha as senhas');
-
-            get(ref(db, `usuarios/${usuarioLogado}`)).then(snap => {
-                if (snap.val().senha === atual) {
-                    update(ref(db, `usuarios/${usuarioLogado}`), { senha: nova }).then(() => {
-                        alert('Senha alterada!');
-                        document.getElementById('senhaAtual').value = '';
-                        document.getElementById('senhaNova').value = '';
-                    });
-                } else {
-                    alert('Senha atual incorreta');
-                }
-            });
-        };
-
-        function carregarUsuarios() {
-            const unsub = onValue(ref(db, 'usuarios'), snap => {
-                const tbody = document.querySelector('#tabelaUsuarios tbody');
-                tbody.innerHTML = '';
-                snap.forEach(child => {
-                    const u = child.val();
-                    tbody.innerHTML += `<tr>
-                        <td>${child.key}</td>
-                        <td>${u.nome}</td>
-                        <td><span class="badge ${u.tipo.toLowerCase()}">${u.tipo}</span></td>
-                        <td>${u.ativo? '✅ Ativo' : '❌ Inativo'}</td>
-                    </tr>`;
-                });
-            });
-            ouvintes.push(() => unsub());
-        }
-
-        window.criarPedido = () => {
-            if (tipoLogado!== 'restaurante') return alert('Só restaurante cria pedido');
-            const cliente = document.getElementById('pedidoCliente').value.trim();
-            const endereco = document.getElementById('pedidoEndereco').value.trim();
-            const valor = document.getElementById('pedidoValor').value;
-            const obs = document.getElementById('pedidoObs').value.trim();
-            if (!cliente ||!endereco ||!valor) return alert('Preencha cliente, endereço e valor');
-
-            push(ref(db, 'pedidos'), {
-                cliente, endereco, valor, obs,
-                restaurante: usuarioLogado,
-                status: 'pendente',
-                entregador: null,
-                criadoEm: Date.now()
-            }).then(() => {
-                alert('Pedido criado!');
-                document.getElementById('pedidoCliente').value = '';
-                document.getElementById('pedidoEndereco').value = '';
-                document.getElementById('pedidoValor').value = '';
-                document.getElementById('pedidoObs').value = '';
-            });
-        };
-
-        function carregarPedidos() {
-            const unsub = onValue(ref(db, 'pedidos'), snap => {
-                const lista = document.getElementById('listaPedidos');
-                lista.innerHTML = '';
-                let pendentes = 0, andamento = 0, finalizados = 0;
-                
-                snap.forEach(child => {
-                    const p = child.val();
-                    const id = child.key;
-                    if (p.status === 'pendente') pendentes++;
-                    if (p.status === 'andamento') andamento++;
-                    if (p.status === 'finalizado' && p.finalizadoEm && new Date(p.finalizadoEm).toDateString() === new Date().toDateString()) finalizados++;
-
-                    let botoes = '';
-                    if (tipoLogado === 'entregador' && p.status === 'pendente') {
-                        botoes = `<button class="success" onclick="aceitarPedido('${id}')">ACEITAR ENTREGA</button>`;
-                    }
-                    if (tipoLogado === 'entregador' && p.status === 'andamento' && p.entregador === usuarioLogado) {
-                        botoes = `<button class="warning" onclick="finalizarPedido('${id}')">FINALIZAR ENTREGA</button>`;
-                    }
-                    if (tipoLogado === 'admin') {
-                        botoes = `<button class="danger" onclick="deletarPedido('${id}')">EXCLUIR</button>`;
-                    }
-
-                    lista.innerHTML += `
-                        <div class="pedido ${p.status === 'pendente'? 'novo' : p.status}">
-                            <h3>Pedido #${id.substring(0,6)} - ${p.cliente}</h3>
-                            <p><b>Endereço:</b> ${p.endereco}</p>
-                            <p><b>Valor:</b> R$ ${p.valor}</p>
-                            <p><b>Status:</b> ${p.status.toUpperCase()}</p>
-                            ${p.entregador? `<p><b>Entregador:</b> ${p.entregador}</p>` : ''}
-                            ${p.obs? `<p><b>Obs:</b> ${p.obs}</p>` : ''}
-                            ${botoes}
-                        </div>
-                    `;
-                });
-
-                document.getElementById('totalPendentes').innerText = pendentes;
-                document.getElementById('totalAndamento').innerText = andamento;
-                document.getElementById('totalFinalizados').innerText = finalizados;
-            });
-            ouvintes.push(() => unsub());
-        }
-
-        window.aceitarPedido = (id) => {
-            get(ref(db, 'pedidos')).then(snap => {
-                let temAndamento = false;
-                snap.forEach(child => {
-                    const p = child.val();
-                    if (p.entregador === usuarioLogado && p.status === 'andamento') temAndamento = true;
-                });
-                if (temAndamento) return alert('Você já tem uma entrega em andamento! Finalize ela primeiro.');
-                
-                update(ref(db, `pedidos/${id}`), {
-                    status: 'andamento',
-                    entregador: usuarioLogado,
-                    aceitoEm: Date.now()
-                }).then(() => pararNotificacao());
-            });
-        };
-
-        window.finalizarPedido = (id) => {
-            update(ref(db, `pedidos/${id}`), {
-                status: 'finalizado',
-                finalizadoEm: Date.now()
-            }).then(() => alert('Entrega finalizada! Você já pode pegar outro pedido.'));
-        };
-
-        window.deletarPedido = (id) => {
-            if (confirm('Excluir este pedido?')) remove(ref(db, `pedidos/${id}`));
-        };
-
-        function escutarPedidos() {
-            const unsub = onChildAdded(ref(db, 'pedidos'), snap => {
-                const p = snap.val();
-                if (tipoLogado === 'entregador' && p.status === 'pendente' && p.criadoEm > Date.now() - 5000) {
-                    tocarNotificacao();
-                }
-            });
-            ouvintes.push(() => unsub());
-        }
-
-        function tocarNotificacao() {
-            if (audioTocando) return;
-            audioTocando = true;
-            document.getElementById('notificacaoAudio').play().catch(e=>console.log('Audio bloqueado'));
-            document.body.insertAdjacentHTML('beforeend', '<div class="notificacao">🔔 NOVO PEDIDO DISPONÍVEL!</div>');
-            timeoutNotificacao = setTimeout(pararNotificacao, 25000);
-        }
-
-        function pararNotificacao() {
-            document.getElementById('notificacaoAudio').pause();
-            document.getElementById('notificacaoAudio').currentTime = 0;
-            audioTocando = false;
-            clearTimeout(timeoutNotificacao);
-            document.querySelector('.notificacao')?.remove();
-        }
-
-        function carregarDestinatarios() {
-            const select = document.getElementById('chatDestinatario');
-            select.innerHTML = '<option value="">Selecione para conversar</option>';
-            get(ref(db, 'usuarios')).then(snap => {
-                snap.forEach(child => {
-                    if (child.key!== usuarioLogado) {
-                        select.innerHTML += `<option value="${child.key}">${child.val().nome} (${child.val().tipo})</option>`;
-                    }
-                });
-            });
-        }
-
-        window.carregarChat = () => {
-            const dest = document.getElementById('chatDestinatario').value;
-            if (!dest) return;
-            chatAtual = [usuarioLogado, dest].sort().join('_');
-            const box = document.getElementById('chatBox');
-            box.innerHTML = '';
-            
-            const unsub = onValue(ref(db, `chats/${chatAtual}`), snap => {
-                box.innerHTML = '';
-                snap.forEach(child => {
-                    const m = child.val();
-                    const classe = m.remetente === usuarioLogado? 'minha' : 'outra';
-                    box.innerHTML += `<div class="msg ${classe}"><b>${m.nome}:</b> ${m.texto}</div>`;
-                });
-                box.scrollTop = box.scrollHeight;
-            });
-            ouvintes.push(() => unsub());
-        };
-
-        window.enviarMensagem = () => {
-            const dest = document.getElementById('chatDestinatario').value;
-            const texto = document.getElementById('chatMensagem').value.trim();
-            if (!dest ||!texto) return;
-            
-            push(ref(db, `chats/${chatAtual}`), {
-                remetente: usuarioLogado,
-                nome: nomeLogado,
-                texto,
-                timestamp: Date.now()
-            }).then(() => {
-                document.getElementById('chatMensagem').value = '';
-            });
-        };
-
-        function escutarChat() {
-            get(ref(db, 'usuarios')).then(snap => {
-                snap.forEach(user => {
-                    if (user.key === usuarioLogado) return;
-                    const chatId = [usuarioLogado, user.key].sort().join('_');
-                    const unsub = onChildAdded(ref(db, `chats/${chatId}`), msgSnap => {
-                        const m = msgSnap.val();
-                        if (m.remetente!== usuarioLogado && Date.now() - m.timestamp < 3000) {
-                            document.getElementById('notificacaoAudio').play().then(()=>{
-                                setTimeout(() => {
-                                    document.getElementById('notificacaoAudio').pause();
-                                    document.getElementById('notificacaoAudio').currentTime = 0;
-                                }, 2000);
-                            }).catch(()=>{});
-                        }
-                    });
-                    ouvintes.push(() => unsub());
-                });
-            });
-        }
-    </script>
+    onValue(ref(db,'chats'),(snap)=>{
+      const novosChats = snap.val()||{};
+      if(userAtual){
+        Object.keys(novosChats).forEach(chatId=>{
+          const msgs = novosChats[chatId];
+          const ultimasMsgs = Object.values(msgs);
+          const ultima = ultimasMsgs[ultimasMsgs.length-1];
+          const chatAntigo = chats[chatId]? Object.values(chats[chatId]) : [];
+          if(ultima && ultima.remetenteId!== userAtual.id && pedidos[chatId] && ultimasMsgs.length > chatAntigo.length){
+            notificar(`💬 ${ultima.remetente}`, ultima.texto);
+          }
+        });
+      }
+      chats = novosChats;
+    });
+  </script>
 </body>
-    </html>
+</html>
