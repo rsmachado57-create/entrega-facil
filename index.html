@@ -1,203 +1,165 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Entrega Fácil Super</title>
-  <style>
-    *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif}
-    body{background:#f5f5f5}
-  .container{max-width:500px;margin:0 auto;background:#fff;min-height:100vh}
-  .login{padding:40px 20px;text-align:center}
-  .login h1{color:#FF6B00;margin-bottom:30px;font-size:28px}
-  .login input,.login select{width:100%;padding:12px;margin:8px 0;border:2px solid #ddd;border-radius:8px;font-size:16px}
-  .btn{background:#FF6B00;color:#fff;border:none;padding:14px 30px;border-radius:8px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
-  .btn:active{transform:scale(0.98)}
-  .btn-small{padding:8px 12px;font-size:14px;width:auto;margin:5px}
-  .btn-danger{background:#dc3545}
-  .btn-success{background:#28a745}
-  .btn-secondary{background:#6c757d}
-  .header{background:#FF6B00;color:#fff;padding:15px 20px;display:flex;justify-content:space-between;align-items:center}
-  .header h2{font-size:20px}
-  .tabs{display:flex;background:#eee}
-  .tab{flex:1;padding:12px;text-align:center;cursor:pointer;border:none;background:#eee;font-weight:600}
-  .tab.active{background:#fff;color:#FF6B00;border-bottom:3px solid #FF6B00}
-  .content{padding:20px}
-  .card{background:#fff;border:2px solid #eee;border-radius:12px;padding:15px;margin-bottom:15px}
-  .card h3{color:#333;margin-bottom:8px}
-  .card p{color:#666;margin:4px 0;font-size:14px}
-  .status{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:bold;margin-top:8px}
-  .status.pendente{background:#fff3cd;color:#856404}
-  .status.aceito{background:#d1ecf1;color:#0c5460}
-  .status.caminho{background:#d4edda;color:#155724}
-  .status.entregue{background:#e2e3e5;color:#383d41}
-  .input-group{margin:15px 0}
-  .input-group label{display:block;margin-bottom:5px;font-weight:600;color:#333}
-  .input-group input,.input-group textarea,.input-group select{width:100%;padding:10px;border:2px solid #ddd;border-radius:8px;font-size:15px}
-  .firebase-status{text-align:center;padding:8px;font-size:13px;background:#d4edda;color:#155724}
-  .firebase-status.error{background:#f8d7da;color:#721c24}
-  .chat-box{border:2px solid #ddd;border-radius:8px;height:200px;overflow-y:auto;padding:10px;margin:10px 0;background:#fafafa}
-  .chat-msg{margin:5px 0;padding:8px;border-radius:8px;max-width:80%}
-  .chat-msg.eu{background:#FF6B00;color:#fff;margin-left:auto}
-  .chat-msg.outro{background:#e9ecef;color:#333}
-  .modal{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:999}
-  .modal.active{display:flex;align-items:center;justify-content:center}
-  .modal-content{background:#fff;padding:25px;border-radius:12px;width:90%;max-width:400px}
-  .hidden{display:none}
-  .notif-bar{background:#ffc107;color:#333;padding:10px;text-align:center;font-size:14px;font-weight:bold;cursor:pointer}
-  .card-entrega{background:#2d2d2d;color:#fff;border-radius:16px;padding:0;overflow:hidden;margin-bottom:15px;border:none}
-  .card-entrega-header{background:#1a1a1a;padding:15px}
-  .tag{background:#FF6B00;color:#fff;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:bold;display:inline-block}
-  .card-entrega-valor{font-size:36px;font-weight:bold;margin:10px 0 0 0}
-  .card-entrega-body{padding:15px}
-  .linha-amarela{height:3px;background:#FFC107;margin:0}
-  .rota{margin:15px 0}
-  .rota-item{display:flex;align-items:flex-start;margin:10px 0}
-  .rota-bolinha{width:12px;height:12px;border-radius:50%;margin-right:12px;margin-top:4px;flex-shrink:0}
-  .rota-bolinha.amarelo{background:#FFC107}
-  .rota-bolinha.laranja{background:#FF6B00}
-  .rota-endereco{flex:1}
-  .rota-endereco b{display:block;font-size:14px;margin-bottom:2px}
-  .rota-endereco span{font-size:13px;color:#bbb}
-  .btn-aceitar{background:#FFC107;color:#1a1a1a;border:none;padding:16px;border-radius:12px;font-size:16px;font-weight:bold;cursor:pointer;width:100%;margin-top:10px}
-  .btn-aceitar:active{transform:scale(0.98)}
-  .btn-aceitar:disabled{background:#666;color:#999;cursor:not-allowed}
-  .bloqueio-msg{background:#fff3cd;color:#856404;padding:12px;border-radius:8px;margin-bottom:15px;text-align:center;font-weight:600}
-  </style>
-  
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entrega Fácil Super</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: Arial, sans-serif; 
+            background: #f5f5f5; 
+            padding: 20px;
+        }
+        .container { 
+            max-width: 400px; 
+            margin: 0 auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 10px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 { 
+            text-align: center; 
+            color: #333; 
+            margin-bottom: 20px; 
+        }
+        .status { 
+            text-align: center; 
+            padding: 10px; 
+            border-radius: 5px; 
+            margin-bottom: 20px; 
+            font-weight: bold;
+        }
+        .conectando { background: #fff3cd; color: #856404; }
+        .conectado { background: #d4edda; color: #155724; }
+        .erro { background: #f8d7da; color: #721c24; }
+        input { 
+            width: 100%; 
+            padding: 12px; 
+            margin: 8px 0; 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            font-size: 16px;
+        }
+        button { 
+            width: 100%; 
+            padding: 12px; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            font-size: 16px; 
+            cursor: pointer; 
+            margin: 10px 0;
+        }
+        button:hover { background: #218838; }
+        .hidden { display: none; }
+        .login-box { margin-top: 20px; }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <div id="loginScreen" class="login">
-      <h1>🚚 Entrega Fácil Super</h1>
-      <div id="firebaseStatus" class="firebase-status">🔄 Conectando...</div>
-      <select id="tipoLogin">
-        <option value="">Selecione o tipo</option>
-        <option value="admin">Administrador</option>
-        <option value="restaurante">Restaurante</option>
-        <option value="entregador">Entregador</option>
-      </select>
-      <input type="text" id="usuario" placeholder="Usuário">
-      <input type="password" id="senha" placeholder="Senha">
-      <button class="btn" onclick="logar()">ENTRAR</button>
-      <button class="btn" id="btnCriarAdmin" style="background:#28a745;display:none;margin-top:20px" onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
+    <div class="container">
+        <h1>🚀 Entrega Fácil Super</h1>
+        
+        <div id="status" class="status conectando">🔄 Conectando...</div>
+        
+        <div id="criarAdmin" class="hidden">
+            <button onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
+        </div>
+
+        <div id="loginBox" class="login-box">
+            <input type="text" id="usuario" placeholder="Usuário">
+            <input type="password" id="senha" placeholder="Senha">
+            <button onclick="login()">ENTRAR</button>
+        </div>
+
+        <div id="painel" class="hidden">
+            <h2>✅ Logado com sucesso!</h2>
+            <p>Bem-vindo ao sistema.</p>
+            <button onclick="logout()">SAIR</button>
+        </div>
     </div>
 
-    <div id="appScreen" class="hidden">
-      <div id="notifBar" class="notif-bar hidden">🔔 Clique aqui para ativar notificações</div>
-      <div class="header">
-        <h2 id="nomeUser">Olá</h2>
-        <button class="btn-small" onclick="sair()" style="background:rgba(255,255,255,0.2)">Sair</button>
-      </div>
-      <div id="firebaseStatusApp" class="firebase-status">✅ Conectado ao Firebase</div>
-      <div class="tabs" id="tabs"></div>
-      <div class="content" id="content"></div>
-    </div>
-  </div>
+    <!-- Firebase SDK -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getDatabase, ref, get, set, child } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-  <div id="modal" class="modal">
-    <div class="modal-content" id="modalContent"></div>
-  </div>
+        // CONFIGURAÇÃO CORRETA COM DATABASEURL
+        const firebaseConfig = {
+            apiKey: "AIzaSyBxjHq5i5K8Y8Z8Z8Z8Z8",
+            authDomain: "entrega-facil-super.firebaseapp.com",
+            databaseURL: "https://entrega-facil-super-default-rtdb.firebaseio.com",
+            projectId: "entrega-facil-super",
+            storageBucket: "entrega-facil-super.appspot.com",
+            messagingSenderId: "123456789",
+            appId: "1:123456789:web:abc123def456"
+        };
 
-  <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSyA_gBrD7Ty0Obw6qcGpbJ9HmI7Ydnv6FMw",
-      authDomain: "entrega-facil-super.firebaseapp.com",
-      databaseURL: "https://entrega-facil-super-default-rtdb.firebaseio.com",
-      projectId: "entrega-facil-super",
-      storageBucket: "entrega-facil-super.firebasestorage.app",
-      messagingSenderId: "428684283332",
-      appId: "1:428684283332:web:32162cd744695fba10a891"
-    };
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    
-    let userAtual = null;
-    let pedidos = {};
-    let usuarios = {};
-    let audioNotificacao = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBTGH0fPTgjMGHm7A7+OZURE');
-    audioNotificacao.loop = true;
-    let timerNotificacao = null;
+        // Testa conexão
+        const statusDiv = document.getElementById('status');
+        const criarAdminDiv = document.getElementById('criarAdmin');
+        
+        get(ref(db, '/')).then(() => {
+            statusDiv.className = 'status conectado';
+            statusDiv.innerHTML = '✅ Conectado ao Firebase';
+            criarAdminDiv.classList.remove('hidden');
+        }).catch((error) => {
+            statusDiv.className = 'status erro';
+            statusDiv.innerHTML = '❌ Erro: ' + error.message;
+            console.error(error);
+        });
 
-    function salvarLogin(user){
-      localStorage.setItem('userEntregaFacil', JSON.stringify(user));
-    }
-    
-    function carregarLogin(){
-      const salvo = localStorage.getItem('userEntregaFacil');
-      if(salvo){
-        userAtual = JSON.parse(salvo);
-        return true;
-      }
-      return false;
-    }
-
-    function criarAdminInicial(){
-      const id = Date.now().toString();
-      db.ref('usuarios/'+id).set({id:id,n:'Admin',u:'Admin',s:'123',t:'admin'});
-      alert('Admin criado! Usuário: Admin | Senha: 123');
-      document.getElementById('btnCriarAdmin').style.display='none';
-    }
-
-    function pedirPermissaoNotif(){
-      if(!('Notification' in window)) return;
-      if(Notification.permission === 'default'){
-        document.getElementById('notifBar').classList.remove('hidden');
-        document.getElementById('notifBar').onclick = () => {
-          Notification.requestPermission().then(perm => {
-            if(perm === 'granted') document.getElementById('notifBar').classList.add('hidden');
-          });
+        // Função criar admin
+        window.criarAdminInicial = function() {
+            const usuarioRef = ref(db, 'usuarios/Admin');
+            get(usuarioRef).then((snapshot) => {
+                if (snapshot.exists()) {
+                    alert('Admin já existe! Use: Admin / 123');
+                } else {
+                    set(usuarioRef, {
+                        senha: '123',
+                        tipo: 'admin',
+                        nome: 'Administrador'
+                    }).then(() => {
+                        alert('✅ Admin criado! Use: Admin / 123');
+                        criarAdminDiv.classList.add('hidden');
+                    });
+                }
+            });
         }
-      }
-    }
 
-    function notificar(titulo, corpo, loop=false){
-      if(!('Notification' in window) || Notification.permission!== 'granted') {
-        if(loop) {
-          audioNotificacao.loop = true;
-          audioNotificacao.play().catch(e=>{});
-          timerNotificacao = setTimeout(()=>{ audioNotificacao.pause(); audioNotificacao.currentTime=0; }, 25000);
-        } else {
-          audioNotificacao.loop = false;
-          audioNotificacao.play().catch(e=>{});
+        // Função login
+        window.login = function() {
+            const user = document.getElementById('usuario').value;
+            const pass = document.getElementById('senha').value;
+            
+            if (!user || !pass) {
+                alert('Preencha usuário e senha');
+                return;
+            }
+
+            get(child(ref(db), `usuarios/${user}`)).then((snapshot) => {
+                if (snapshot.exists() && snapshot.val().senha === pass) {
+                    document.getElementById('loginBox').classList.add('hidden');
+                    document.getElementById('painel').classList.remove('hidden');
+                    criarAdminDiv.classList.add('hidden');
+                } else {
+                    alert('Usuário ou senha inválidos');
+                }
+            });
         }
-        return;
-      }
-      new Notification(titulo, {body: corpo, icon: 'https://cdn-icons-png.flaticon.com/512/1048/1048315.png'});
-      if(loop) {
-        audioNotificacao.loop = true;
-        audioNotificacao.play().catch(e=>{});
-        timerNotificacao = setTimeout(()=>{ audioNotificacao.pause(); audioNotificacao.currentTime=0; }, 25000);
-      } else {
-        audioNotificacao.loop = false;
-        audioNotificacao.play().catch(e=>{});
-      }
-    }
 
-    function pararNotificacao(){
-      if(timerNotificacao) clearTimeout(timerNotificacao);
-      audioNotificacao.pause();
-      audioNotificacao.currentTime = 0;
-    }
-
-    function logar(){
-      const tipo = document.getElementById('tipoLogin').value;
-      const u = document.getElementById('usuario').value;
-      const s = document.getElementById('senha').value;
-      if(!tipo||!u||!s) return alert('Preencha todos os campos');
-      
-      const user = Object.values(usuarios).find(us => us.u===u && us.s===s && us.t===tipo);
-      if(!user) return alert('Usuário ou senha inválidos');
-      if(!user.id) return alert('Usuário antigo sem ID. Apague e crie novamente.');
-      
-      userAtual = user;
-      salvarLogin(user);
-      entrarNoApp();
-    }
-
-    function entrarNoApp(){
-      document.getElementById('loginScreen').classList.add('hidden');
-      document.getElementById('appScreen').classList.remove('
+        window.logout = function() {
+            document.getElementById('loginBox').classList.remove('hidden');
+            document.getElementById('painel').classList.add('hidden');
+            document.getElementById('usuario').value = '';
+            document.getElementById('senha').value = '';
+        }
+    </script>
+</body>
+</html>
