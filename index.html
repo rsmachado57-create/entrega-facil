@@ -60,7 +60,7 @@
             <input type="text" id="loginUsuario" placeholder="Usuário">
             <input type="password" id="loginSenha" placeholder="Senha">
             <button onclick="fazerLogin()" style="width: 100%;">ENTRAR</button>
-            <div id="criarAdminInicial" class="hidden" style="margin-top: 15px; text-align: center;">
+            <div id="criarAdminInicial" style="margin-top: 15px; text-align: center;">
                 <button class="success" onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
             </div>
         </div>
@@ -164,11 +164,11 @@
         let chatAtual = null;
         let ouvintes = [];
 
-        // INICIA TUDO SÓ DEPOIS QUE A PÁGINA CARREGAR
         document.addEventListener('DOMContentLoaded', () => {
             try {
                 app = initializeApp(firebaseConfig);
                 db = getDatabase(app);
+                testarConexao();
                 
                 const salvo = localStorage.getItem('usuarioLogado');
                 if (salvo) {
@@ -177,12 +177,10 @@
                     tipoLogado = dados.tipo;
                     nomeLogado = dados.nome;
                     entrarNoSistema();
-                } else {
-                    testarConexao();
                 }
             } catch (e) {
                 document.getElementById('statusConexao').className = 'status erro';
-                document.getElementById('statusConexao').innerHTML = '❌ Erro ao iniciar: ' + e.message;
+                document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + e.message;
             }
         });
 
@@ -190,27 +188,24 @@
             get(ref(db, '/')).then(() => {
                 document.getElementById('statusConexao').className = 'status conectado';
                 document.getElementById('statusConexao').innerHTML = '✅ Conectado ao Firebase';
-                verificarAdminInicial();
             }).catch(err => {
                 document.getElementById('statusConexao').className = 'status erro';
                 document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + err.code;
             });
         }
 
-        function verificarAdminInicial() {
-            get(ref(db, 'usuarios/Admin')).then(snap => {
-                if (!snap.exists()) {
-                    document.getElementById('criarAdminInicial').classList.remove('hidden');
-                }
-            });
-        }
-
         window.criarAdminInicial = () => {
             set(ref(db, 'usuarios/Admin'), {
-                senha: '123', tipo: 'admin', nome: 'Administrador', ativo: true
+                senha: '123', 
+                tipo: 'admin', 
+                nome: 'Administrador', 
+                ativo: true
             }).then(() => {
-                alert('Admin criado! Usuário: Admin | Senha: 123');
-                document.getElementById('criarAdminInicial').classList.add('hidden');
+                alert('Admin criado com sucesso!\n\nUsuário: Admin\nSenha: 123\n\nAgora é só logar.');
+                document.getElementById('loginUsuario').value = 'Admin';
+                document.getElementById('loginSenha').value = '123';
+            }).catch(err => {
+                alert('Erro ao criar admin: ' + err.message);
             });
         };
 
@@ -245,10 +240,8 @@
         }
 
         function iniciarOuvintes() {
-            // Limpa ouvintes antigos
             ouvintes.forEach(unsub => unsub());
             ouvintes = [];
-            
             escutarPedidos();
             escutarChat();
             carregarUsuarios();
