@@ -6,39 +6,13 @@
     <title>Entrega Fácil Super - Sistema Completo</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            font-family: Arial, sans-serif; 
-            background: #f0f2f5; 
-            color: #333;
-        }
+        body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
         .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
-        .card { 
-            background: white; 
-            padding: 20px; 
-            border-radius: 8px; 
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
-            margin-bottom: 20px;
-        }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin-bottom: 20px; }
         h1, h2, h3 { margin-bottom: 15px; color: #1a73e8; }
         h1 { text-align: center; }
-        input, select, textarea { 
-            width: 100%; 
-            padding: 10px; 
-            margin: 5px 0 15px 0; 
-            border: 1px solid #ddd; 
-            border-radius: 4px; 
-            font-size: 14px;
-        }
-        button { 
-            padding: 10px 20px; 
-            background: #1a73e8; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
-            cursor: pointer; 
-            font-size: 14px;
-            margin: 5px 5px 5px 0;
-        }
+        input, select, textarea { width: 100%; padding: 10px; margin: 5px 0 15px 0; border: 1px solid #ddd; border-radius: 4px; font-size: 14px; }
+        button { padding: 10px 20px; background: #1a73e8; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 14px; margin: 5px 5px 5px 0; }
         button:hover { background: #1557b0; }
         button.danger { background: #d93025; }
         button.success { background: #188038; }
@@ -46,56 +20,23 @@
         .hidden { display: none; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
-        .status { 
-            padding: 10px; 
-            border-radius: 4px; 
-            margin-bottom: 15px; 
-            text-align: center; 
-            font-weight: bold;
-        }
+        .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; }
         .conectado { background: #e6f4ea; color: #188038; }
         .erro { background: #fce8e6; color: #d93025; }
-        .pedido { 
-            border: 1px solid #ddd; 
-            padding: 15px; 
-            border-radius: 6px; 
-            margin: 10px 0;
-        }
+        .pedido { border: 1px solid #ddd; padding: 15px; border-radius: 6px; margin: 10px 0; }
         .pedido.novo { border-left: 5px solid #f9ab00; animation: piscar 1s infinite; }
         .pedido.andamento { border-left: 5px solid #1a73e8; }
         .pedido.finalizado { border-left: 5px solid #188038; opacity: 0.7; }
         @keyframes piscar { 50% { background: #fff3cd; } }
-        .header { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 20px;
-        }
-        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; }
-        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px; }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #ddd; overflow-x: auto; }
+        .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
         .tab.ativo { border-bottom: 3px solid #1a73e8; font-weight: bold; }
-        .chat-box { 
-            height: 300px; 
-            border: 1px solid #ddd; 
-            overflow-y: auto; 
-            padding: 10px; 
-            margin-bottom: 10px;
-            background: #f9f9f9;
-        }
+        .chat-box { height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
         .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; }
         .msg.minha { background: #d2e3fc; margin-left: auto; }
         .msg.outra { background: #e8eaed; }
-        .notificacao { 
-            position: fixed; 
-            top: 20px; 
-            right: 20px; 
-            background: #d93025; 
-            color: white; 
-            padding: 15px 20px; 
-            border-radius: 8px; 
-            z-index: 9999;
-            animation: tremer 0.5s infinite;
-        }
+        .notificacao { position: fixed; top: 20px; right: 20px; background: #d93025; color: white; padding: 15px 20px; border-radius: 8px; z-index: 9999; animation: tremer 0.5s infinite; }
         @keyframes tremer { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
@@ -104,16 +45,15 @@
         .badge.admin { background: #d93025; }
         .badge.entregador { background: #1a73e8; }
         .badge.restaurante { background: #188038; }
+        @media (max-width: 768px) { .grid, .grid-3 { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
-    <!-- ÁUDIO DE NOTIFICAÇÃO -->
     <audio id="notificacaoAudio" loop>
         <source src="https://assets.mixkit.co/active_storage/sfx/2869/2869-preview.mp3" type="audio/mpeg">
     </audio>
 
     <div class="container">
-        <!-- TELA DE LOGIN -->
         <div id="telaLogin" class="card" style="max-width: 400px; margin: 50px auto;">
             <h1>🚀 Entrega Fácil Super</h1>
             <div id="statusConexao" class="status">🔄 Conectando...</div>
@@ -125,7 +65,6 @@
             </div>
         </div>
 
-        <!-- SISTEMA PRINCIPAL -->
         <div id="sistema" class="hidden">
             <div class="card">
                 <div class="header">
@@ -139,26 +78,15 @@
                 <div class="tabs" id="abas"></div>
             </div>
 
-            <!-- ABA: PAINEL -->
             <div id="abaPainel" class="card aba">
                 <h2>📊 Painel</h2>
                 <div class="grid-3">
-                    <div class="card">
-                        <h3>Pedidos Pendentes</h3>
-                        <h1 id="totalPendentes">0</h1>
-                    </div>
-                    <div class="card">
-                        <h3>Em Andamento</h3>
-                        <h1 id="totalAndamento">0</h1>
-                    </div>
-                    <div class="card">
-                        <h3>Finalizados Hoje</h3>
-                        <h1 id="totalFinalizados">0</h1>
-                    </div>
+                    <div class="card"><h3>Pedidos Pendentes</h3><h1 id="totalPendentes">0</h1></div>
+                    <div class="card"><h3>Em Andamento</h3><h1 id="totalAndamento">0</h1></div>
+                    <div class="card"><h3>Finalizados Hoje</h3><h1 id="totalFinalizados">0</h1></div>
                 </div>
             </div>
 
-            <!-- ABA: PEDIDOS -->
             <div id="abaPedidos" class="card aba hidden">
                 <h2>📦 Pedidos</h2>
                 <div id="formPedido" class="hidden">
@@ -172,7 +100,6 @@
                 <div id="listaPedidos"></div>
             </div>
 
-            <!-- ABA: CHAT -->
             <div id="abaChat" class="card aba hidden">
                 <h2>💬 Chat</h2>
                 <select id="chatDestinatario" onchange="carregarChat()">
@@ -183,7 +110,6 @@
                 <button onclick="enviarMensagem()">ENVIAR</button>
             </div>
 
-            <!-- ABA: USUÁRIOS - SÓ ADMIN -->
             <div id="abaUsuarios" class="card aba hidden">
                 <h2>👥 Usuários</h2>
                 <div class="grid">
@@ -219,7 +145,6 @@
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
         import { getDatabase, ref, get, set, push, onValue, update, remove, onChildAdded } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-        // SEU FIREBASE CONFIG COM DADOS REAIS
         const firebaseConfig = {
             apiKey: "AIzaSyA_gBrD7Ty0Obw6qcGpbJ9HmI7Ydnv6FMw",
             authDomain: "entrega-facil-super.firebaseapp.com",
@@ -240,7 +165,6 @@
         let timeoutNotificacao = null;
         let chatAtual = null;
 
-        // MANTER LOGADO
         window.onload = () => {
             const salvo = localStorage.getItem('usuarioLogado');
             if (salvo) {
@@ -253,7 +177,6 @@
             testarConexao();
         };
 
-        // CONEXÃO
         function testarConexao() {
             get(ref(db, '/')).then(() => {
                 document.getElementById('statusConexao').className = 'status conectado';
@@ -282,7 +205,6 @@
             });
         };
 
-        // LOGIN
         window.fazerLogin = () => {
             const user = document.getElementById('loginUsuario').value;
             const pass = document.getElementById('loginSenha').value;
@@ -320,7 +242,6 @@
             location.reload();
         };
 
-        // ABAS
         function montarAbas() {
             const abas = document.getElementById('abas');
             abas.innerHTML = '';
@@ -328,24 +249,23 @@
             if (tipoLogado === 'admin') todasAbas.push('Usuários');
             if (tipoLogado === 'restaurante') document.getElementById('formPedido').classList.remove('hidden');
             
-            todasAbas.forEach(aba => {
-                abas.innerHTML += `<div class="tab" onclick="mostrarAba('${aba}')">${aba}</div>`;
+            todasAbas.forEach((aba, i) => {
+                abas.innerHTML += `<div class="tab ${i===0?'ativo':''}" onclick="mostrarAba('${aba}', this)">${aba}</div>`;
             });
         }
 
-        window.mostrarAba = (nome) => {
+        window.mostrarAba = (nome, el) => {
             document.querySelectorAll('.aba').forEach(a => a.classList.add('hidden'));
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
             document.getElementById(`aba${nome}`).classList.remove('hidden');
-            event?.target.classList.add('ativo');
+            if(el) el.classList.add('ativo');
             if (nome === 'Pedidos') carregarPedidos();
             if (nome === 'Chat') carregarDestinatarios();
         };
 
-        // USUÁRIOS
         window.cadastrarUsuario = () => {
             if (tipoLogado !== 'admin') return alert('Só admin pode cadastrar');
-            const user = document.getElementById('novoUsuario').value;
+            const user = document.getElementById('novoUsuario').value.trim();
             const senha = document.getElementById('novaSenha').value;
             const nome = document.getElementById('novoNome').value;
             const tipo = document.getElementById('novoTipo').value;
@@ -353,3 +273,95 @@
 
             set(ref(db, `usuarios/${user}`), { senha, nome, tipo, ativo: true }).then(() => {
                 alert('Usuário cadastrado!');
+                document.getElementById('novoUsuario').value = '';
+                document.getElementById('novaSenha').value = '';
+                document.getElementById('novoNome').value = '';
+            });
+        };
+
+        window.alterarSenha = () => {
+            const atual = document.getElementById('senhaAtual').value;
+            const nova = document.getElementById('senhaNova').value;
+            if (!atual || !nova) return alert('Preencha as senhas');
+
+            get(ref(db, `usuarios/${usuarioLogado}`)).then(snap => {
+                if (snap.val().senha === atual) {
+                    update(ref(db, `usuarios/${usuarioLogado}`), { senha: nova }).then(() => {
+                        alert('Senha alterada!');
+                        document.getElementById('senhaAtual').value = '';
+                        document.getElementById('senhaNova').value = '';
+                    });
+                } else {
+                    alert('Senha atual incorreta');
+                }
+            });
+        };
+
+        function carregarUsuarios() {
+            onValue(ref(db, 'usuarios'), snap => {
+                const tbody = document.querySelector('#tabelaUsuarios tbody');
+                tbody.innerHTML = '';
+                snap.forEach(child => {
+                    const u = child.val();
+                    tbody.innerHTML += `<tr>
+                        <td>${child.key}</td>
+                        <td>${u.nome}</td>
+                        <td><span class="badge ${u.tipo}">${u.tipo}</span></td>
+                        <td>${u.ativo ? '✅ Ativo' : '❌ Inativo'}</td>
+                    </tr>`;
+                });
+            });
+        }
+
+        window.criarPedido = () => {
+            if (tipoLogado !== 'restaurante') return alert('Só restaurante cria pedido');
+            const cliente = document.getElementById('pedidoCliente').value;
+            const endereco = document.getElementById('pedidoEndereco').value;
+            const valor = document.getElementById('pedidoValor').value;
+            const obs = document.getElementById('pedidoObs').value;
+            if (!cliente || !endereco || !valor) return alert('Preencha cliente, endereço e valor');
+
+            push(ref(db, 'pedidos'), {
+                cliente, endereco, valor, obs,
+                restaurante: usuarioLogado,
+                status: 'pendente',
+                entregador: null,
+                criadoEm: Date.now()
+            }).then(() => {
+                alert('Pedido criado!');
+                document.getElementById('pedidoCliente').value = '';
+                document.getElementById('pedidoEndereco').value = '';
+                document.getElementById('pedidoValor').value = '';
+                document.getElementById('pedidoObs').value = '';
+            });
+        };
+
+        function carregarPedidos() {
+            onValue(ref(db, 'pedidos'), snap => {
+                const lista = document.getElementById('listaPedidos');
+                lista.innerHTML = '';
+                let pendentes = 0, andamento = 0, finalizados = 0;
+                
+                snap.forEach(child => {
+                    const p = child.val();
+                    const id = child.key;
+                    if (p.status === 'pendente') pendentes++;
+                    if (p.status === 'andamento') andamento++;
+                    if (p.status === 'finalizado' && new Date(p.finalizadoEm).toDateString() === new Date().toDateString()) finalizados++;
+
+                    let botoes = '';
+                    if (tipoLogado === 'entregador' && p.status === 'pendente') {
+                        botoes = `<button class="success" onclick="aceitarPedido('${id}')">ACEITAR ENTREGA</button>`;
+                    }
+                    if (tipoLogado === 'entregador' && p.status === 'andamento' && p.entregador === usuarioLogado) {
+                        botoes = `<button class="warning" onclick="finalizarPedido('${id}')">FINALIZAR ENTREGA</button>`;
+                    }
+                    if (tipoLogado === 'admin') {
+                        botoes = `<button class="danger" onclick="deletarPedido('${id}')">EXCLUIR</button>`;
+                    }
+
+                    lista.innerHTML += `
+                        <div class="pedido ${p.status === 'pendente' ? 'novo' : p.status}">
+                            <h3>Pedido #${id.substring(0,6)} - ${p.cliente}</h3>
+                            <p><b>Endereço:</b> ${p.endereco}</p>
+                            <p><b>Valor:</b> R$ ${p.valor}</
