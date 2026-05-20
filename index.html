@@ -60,7 +60,7 @@
             <input type="text" id="loginUsuario" placeholder="Usuário">
             <input type="password" id="loginSenha" placeholder="Senha">
             <button onclick="fazerLogin()" style="width: 100%;">ENTRAR</button>
-            <div id="criarAdminInicial" style="margin-top: 15px; text-align: center;">
+            <div id="criarAdminInicial" class="hidden" style="margin-top: 15px; text-align: center;">
                 <button class="success" onclick="criarAdminInicial()">+ CRIAR ADMIN INICIAL</button>
             </div>
         </div>
@@ -188,9 +188,20 @@
             get(ref(db, '/')).then(() => {
                 document.getElementById('statusConexao').className = 'status conectado';
                 document.getElementById('statusConexao').innerHTML = '✅ Conectado ao Firebase';
+                verificarAdminInicial();
             }).catch(err => {
                 document.getElementById('statusConexao').className = 'status erro';
                 document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + err.code;
+            });
+        }
+
+        function verificarAdminInicial() {
+            get(ref(db, 'usuarios/Admin')).then(snap => {
+                if (!snap.exists()) {
+                    document.getElementById('criarAdminInicial').classList.remove('hidden');
+                } else {
+                    document.getElementById('criarAdminInicial').classList.add('hidden');
+                }
             });
         }
 
@@ -201,9 +212,10 @@
                 nome: 'Administrador', 
                 ativo: true
             }).then(() => {
-                alert('Admin criado com sucesso!\n\nUsuário: Admin\nSenha: 123\n\nAgora é só logar.');
+                alert('Admin criado!\nUsuário: Admin\nSenha: 123');
                 document.getElementById('loginUsuario').value = 'Admin';
                 document.getElementById('loginSenha').value = '123';
+                verificarAdminInicial();
             }).catch(err => {
                 alert('Erro ao criar admin: ' + err.message);
             });
@@ -217,7 +229,7 @@
             get(ref(db, `usuarios/${user}`)).then(snap => {
                 if (snap.exists() && snap.val().senha === pass && snap.val().ativo) {
                     usuarioLogado = user;
-                    tipoLogado = snap.val().tipo;
+                    tipoLogado = snap.val().tipo.toLowerCase(); // FORÇA MINÚSCULO
                     nomeLogado = snap.val().nome;
                     localStorage.setItem('usuarioLogado', JSON.stringify({usuario: user, tipo: tipoLogado, nome: nomeLogado}));
                     entrarNoSistema();
@@ -258,7 +270,7 @@
             const abas = document.getElementById('abas');
             abas.innerHTML = '';
             const todasAbas = ['Painel', 'Pedidos', 'Chat'];
-            if (tipoLogado === 'admin') todasAbas.push('Usuários');
+            if (tipoLogado === 'admin') todasAbas.push('Usuários'); // AGORA FUNCIONA
             if (tipoLogado === 'restaurante') document.getElementById('formPedido').classList.remove('hidden');
             
             todasAbas.forEach((aba, i) => {
@@ -318,7 +330,7 @@
                     tbody.innerHTML += `<tr>
                         <td>${child.key}</td>
                         <td>${u.nome}</td>
-                        <td><span class="badge ${u.tipo}">${u.tipo}</span></td>
+                        <td><span class="badge ${u.tipo.toLowerCase()}">${u.tipo}</span></td>
                         <td>${u.ativo ? '✅ Ativo' : '❌ Inativo'}</td>
                     </tr>`;
                 });
