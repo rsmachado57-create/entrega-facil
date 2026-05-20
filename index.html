@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entrega Fácil Super - Sistema Completo</title>
+    <title>Entrega Fácil Super</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: Arial, sans-serif; background: #f0f2f5; color: #333; }
@@ -17,7 +17,7 @@
         button.danger { background: #d93025; }
         button.success { background: #188038; }
         button.warning { background: #f9ab00; }
-        .hidden { display: none; }
+        .hidden { display: none !important; }
         .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
         .status { padding: 10px; border-radius: 4px; margin-bottom: 15px; text-align: center; font-weight: bold; }
@@ -33,7 +33,7 @@
         .tab { padding: 10px 20px; cursor: pointer; border-bottom: 3px solid transparent; white-space: nowrap; }
         .tab.ativo { border-bottom: 3px solid #1a73e8; font-weight: bold; }
         .chat-box { height: 300px; border: 1px solid #ddd; overflow-y: auto; padding: 10px; margin-bottom: 10px; background: #f9f9f9; }
-        .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; }
+        .msg { margin: 5px 0; padding: 8px; border-radius: 6px; max-width: 70%; word-break: break-word; }
         .msg.minha { background: #d2e3fc; margin-left: auto; }
         .msg.outra { background: #e8eaed; }
         .notificacao { position: fixed; top: 20px; right: 20px; background: #d93025; color: white; padding: 15px 20px; border-radius: 8px; z-index: 9999; animation: tremer 0.5s infinite; }
@@ -155,27 +155,36 @@
             appId: "1:428684283332:web:32162cd744695fba10a891"
         };
 
-        const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
-
+        let app, db;
         let usuarioLogado = null;
         let tipoLogado = null;
         let nomeLogado = null;
         let audioTocando = false;
         let timeoutNotificacao = null;
         let chatAtual = null;
+        let ouvintes = [];
 
-        window.onload = () => {
-            const salvo = localStorage.getItem('usuarioLogado');
-            if (salvo) {
-                const dados = JSON.parse(salvo);
-                usuarioLogado = dados.usuario;
-                tipoLogado = dados.tipo;
-                nomeLogado = dados.nome;
-                entrarNoSistema();
+        // INICIA TUDO SÓ DEPOIS QUE A PÁGINA CARREGAR
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getDatabase(app);
+                
+                const salvo = localStorage.getItem('usuarioLogado');
+                if (salvo) {
+                    const dados = JSON.parse(salvo);
+                    usuarioLogado = dados.usuario;
+                    tipoLogado = dados.tipo;
+                    nomeLogado = dados.nome;
+                    entrarNoSistema();
+                } else {
+                    testarConexao();
+                }
+            } catch (e) {
+                document.getElementById('statusConexao').className = 'status erro';
+                document.getElementById('statusConexao').innerHTML = '❌ Erro ao iniciar: ' + e.message;
             }
-            testarConexao();
-        };
+        });
 
         function testarConexao() {
             get(ref(db, '/')).then(() => {
@@ -184,7 +193,7 @@
                 verificarAdminInicial();
             }).catch(err => {
                 document.getElementById('statusConexao').className = 'status erro';
-                document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + err.message;
+                document.getElementById('statusConexao').innerHTML = '❌ Erro: ' + err.code;
             });
         }
 
@@ -206,7 +215,7 @@
         };
 
         window.fazerLogin = () => {
-            const user = document.getElementById('loginUsuario').value;
+            const user = document.getElementById('loginUsuario').value.trim();
             const pass = document.getElementById('loginSenha').value;
             if (!user || !pass) return alert('Preencha usuário e senha');
 
@@ -220,7 +229,7 @@
                 } else {
                     alert('Usuário ou senha inválidos');
                 }
-            });
+            }).catch(() => alert('Erro ao conectar. Tente novamente.'));
         };
 
         function entrarNoSistema() {
@@ -232,13 +241,23 @@
             badge.className = `badge ${tipoLogado}`;
             montarAbas();
             mostrarAba('Painel');
+            iniciarOuvintes();
+        }
+
+        function iniciarOuvintes() {
+            // Limpa ouvintes antigos
+            ouvintes.forEach(unsub => unsub());
+            ouvintes = [];
+            
             escutarPedidos();
             escutarChat();
             carregarUsuarios();
+            carregarPedidos();
         }
 
         window.logout = () => {
             localStorage.removeItem('usuarioLogado');
+            ouvintes.forEach(unsub => unsub());
             location.reload();
         };
 
@@ -259,7 +278,7 @@
             document.querySelectorAll('.tab').forEach(t => t.classList.remove('ativo'));
             document.getElementById(`aba${nome}`).classList.remove('hidden');
             if(el) el.classList.add('ativo');
-            if (nome === 'Pedidos') carregarPedidos();
+            else document.querySelector('.tab').classList.add('ativo');
             if (nome === 'Chat') carregarDestinatarios();
         };
 
@@ -267,7 +286,7 @@
             if (tipoLogado !== 'admin') return alert('Só admin pode cadastrar');
             const user = document.getElementById('novoUsuario').value.trim();
             const senha = document.getElementById('novaSenha').value;
-            const nome = document.getElementById('novoNome').value;
+            const nome = document.getElementById('novoNome').value.trim();
             const tipo = document.getElementById('novoTipo').value;
             if (!user || !senha || !nome) return alert('Preencha todos os campos');
 
@@ -298,7 +317,7 @@
         };
 
         function carregarUsuarios() {
-            onValue(ref(db, 'usuarios'), snap => {
+            const unsub = onValue(ref(db, 'usuarios'), snap => {
                 const tbody = document.querySelector('#tabelaUsuarios tbody');
                 tbody.innerHTML = '';
                 snap.forEach(child => {
@@ -311,14 +330,15 @@
                     </tr>`;
                 });
             });
+            ouvintes.push(() => unsub());
         }
 
         window.criarPedido = () => {
             if (tipoLogado !== 'restaurante') return alert('Só restaurante cria pedido');
-            const cliente = document.getElementById('pedidoCliente').value;
-            const endereco = document.getElementById('pedidoEndereco').value;
+            const cliente = document.getElementById('pedidoCliente').value.trim();
+            const endereco = document.getElementById('pedidoEndereco').value.trim();
             const valor = document.getElementById('pedidoValor').value;
-            const obs = document.getElementById('pedidoObs').value;
+            const obs = document.getElementById('pedidoObs').value.trim();
             if (!cliente || !endereco || !valor) return alert('Preencha cliente, endereço e valor');
 
             push(ref(db, 'pedidos'), {
@@ -337,7 +357,7 @@
         };
 
         function carregarPedidos() {
-            onValue(ref(db, 'pedidos'), snap => {
+            const unsub = onValue(ref(db, 'pedidos'), snap => {
                 const lista = document.getElementById('listaPedidos');
                 lista.innerHTML = '';
                 let pendentes = 0, andamento = 0, finalizados = 0;
@@ -347,7 +367,7 @@
                     const id = child.key;
                     if (p.status === 'pendente') pendentes++;
                     if (p.status === 'andamento') andamento++;
-                    if (p.status === 'finalizado' && new Date(p.finalizadoEm).toDateString() === new Date().toDateString()) finalizados++;
+                    if (p.status === 'finalizado' && p.finalizadoEm && new Date(p.finalizadoEm).toDateString() === new Date().toDateString()) finalizados++;
 
                     let botoes = '';
                     if (tipoLogado === 'entregador' && p.status === 'pendente') {
@@ -364,4 +384,142 @@
                         <div class="pedido ${p.status === 'pendente' ? 'novo' : p.status}">
                             <h3>Pedido #${id.substring(0,6)} - ${p.cliente}</h3>
                             <p><b>Endereço:</b> ${p.endereco}</p>
-                            <p><b>Valor:</b> R$ ${p.valor}</
+                            <p><b>Valor:</b> R$ ${p.valor}</p>
+                            <p><b>Status:</b> ${p.status.toUpperCase()}</p>
+                            ${p.entregador ? `<p><b>Entregador:</b> ${p.entregador}</p>` : ''}
+                            ${p.obs ? `<p><b>Obs:</b> ${p.obs}</p>` : ''}
+                            ${botoes}
+                        </div>
+                    `;
+                });
+
+                document.getElementById('totalPendentes').innerText = pendentes;
+                document.getElementById('totalAndamento').innerText = andamento;
+                document.getElementById('totalFinalizados').innerText = finalizados;
+            });
+            ouvintes.push(() => unsub());
+        }
+
+        window.aceitarPedido = (id) => {
+            get(ref(db, 'pedidos')).then(snap => {
+                let temAndamento = false;
+                snap.forEach(child => {
+                    const p = child.val();
+                    if (p.entregador === usuarioLogado && p.status === 'andamento') temAndamento = true;
+                });
+                if (temAndamento) return alert('Você já tem uma entrega em andamento! Finalize ela primeiro.');
+                
+                update(ref(db, `pedidos/${id}`), {
+                    status: 'andamento',
+                    entregador: usuarioLogado,
+                    aceitoEm: Date.now()
+                }).then(() => pararNotificacao());
+            });
+        };
+
+        window.finalizarPedido = (id) => {
+            update(ref(db, `pedidos/${id}`), {
+                status: 'finalizado',
+                finalizadoEm: Date.now()
+            }).then(() => alert('Entrega finalizada! Você já pode pegar outro pedido.'));
+        };
+
+        window.deletarPedido = (id) => {
+            if (confirm('Excluir este pedido?')) remove(ref(db, `pedidos/${id}`));
+        };
+
+        function escutarPedidos() {
+            const unsub = onChildAdded(ref(db, 'pedidos'), snap => {
+                const p = snap.val();
+                if (tipoLogado === 'entregador' && p.status === 'pendente' && p.criadoEm > Date.now() - 5000) {
+                    tocarNotificacao();
+                }
+            });
+            ouvintes.push(() => unsub());
+        }
+
+        function tocarNotificacao() {
+            if (audioTocando) return;
+            audioTocando = true;
+            document.getElementById('notificacaoAudio').play().catch(e=>console.log('Audio bloqueado'));
+            document.body.insertAdjacentHTML('beforeend', '<div class="notificacao">🔔 NOVO PEDIDO DISPONÍVEL!</div>');
+            timeoutNotificacao = setTimeout(pararNotificacao, 25000);
+        }
+
+        function pararNotificacao() {
+            document.getElementById('notificacaoAudio').pause();
+            document.getElementById('notificacaoAudio').currentTime = 0;
+            audioTocando = false;
+            clearTimeout(timeoutNotificacao);
+            document.querySelector('.notificacao')?.remove();
+        }
+
+        function carregarDestinatarios() {
+            const select = document.getElementById('chatDestinatario');
+            select.innerHTML = '<option value="">Selecione para conversar</option>';
+            get(ref(db, 'usuarios')).then(snap => {
+                snap.forEach(child => {
+                    if (child.key !== usuarioLogado) {
+                        select.innerHTML += `<option value="${child.key}">${child.val().nome} (${child.val().tipo})</option>`;
+                    }
+                });
+            });
+        }
+
+        window.carregarChat = () => {
+            const dest = document.getElementById('chatDestinatario').value;
+            if (!dest) return;
+            chatAtual = [usuarioLogado, dest].sort().join('_');
+            const box = document.getElementById('chatBox');
+            box.innerHTML = '';
+            
+            const unsub = onValue(ref(db, `chats/${chatAtual}`), snap => {
+                box.innerHTML = '';
+                snap.forEach(child => {
+                    const m = child.val();
+                    const classe = m.remetente === usuarioLogado ? 'minha' : 'outra';
+                    box.innerHTML += `<div class="msg ${classe}"><b>${m.nome}:</b> ${m.texto}</div>`;
+                });
+                box.scrollTop = box.scrollHeight;
+            });
+            ouvintes.push(() => unsub());
+        };
+
+        window.enviarMensagem = () => {
+            const dest = document.getElementById('chatDestinatario').value;
+            const texto = document.getElementById('chatMensagem').value.trim();
+            if (!dest || !texto) return;
+            
+            push(ref(db, `chats/${chatAtual}`), {
+                remetente: usuarioLogado,
+                nome: nomeLogado,
+                texto,
+                timestamp: Date.now()
+            }).then(() => {
+                document.getElementById('chatMensagem').value = '';
+            });
+        };
+
+        function escutarChat() {
+            get(ref(db, 'usuarios')).then(snap => {
+                snap.forEach(user => {
+                    if (user.key === usuarioLogado) return;
+                    const chatId = [usuarioLogado, user.key].sort().join('_');
+                    const unsub = onChildAdded(ref(db, `chats/${chatId}`), msgSnap => {
+                        const m = msgSnap.val();
+                        if (m.remetente !== usuarioLogado && Date.now() - m.timestamp < 3000) {
+                            document.getElementById('notificacaoAudio').play().then(()=>{
+                                setTimeout(() => {
+                                    document.getElementById('notificacaoAudio').pause();
+                                    document.getElementById('notificacaoAudio').currentTime = 0;
+                                }, 2000);
+                            }).catch(()=>{});
+                        }
+                    });
+                    ouvintes.push(() => unsub());
+                });
+            });
+        }
+    </script>
+</body>
+</html>
