@@ -98,7 +98,7 @@
 
   <script type="module">
     import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-    import { getDatabase, ref, set, onValue, push, remove, update } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
+    import { getDatabase, ref, set, onValue, push, remove, update, get } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
     const firebaseConfig = {
       apiKey: "AIzaSyA_gBrD7Ty0Obw6qcGpbJ9HmI7Ydnv6FMw",
@@ -121,6 +121,20 @@
     audioNotificacao.loop = true;
     let audioTocando = false;
     let timeoutNotificacao = null;
+
+    // CORREÇÃO 1: VERIFICA SE JÁ TÁ LOGADO AO ABRIR
+    const loginSalvo = localStorage.getItem('userEntregaFacil');
+    if(loginSalvo){
+      const dados = JSON.parse(loginSalvo);
+      get(ref(db,'usuarios/'+dados.id)).then(snap=>{
+        if(snap.exists()){
+          userAtual = snap.val();
+          entrarNoApp();
+        } else {
+          localStorage.removeItem('userEntregaFacil');
+        }
+      });
+    }
 
     window.criarAdminInicial = () => {
       const id = Date.now().toString();
@@ -177,15 +191,23 @@
       if(!user.id) return alert('Usuário antigo sem ID. Apague e crie novamente pelo painel admin.');
       
       userAtual = user;
+      // CORREÇÃO 2: SALVA LOGIN NO NAVEGADOR
+      localStorage.setItem('userEntregaFacil', JSON.stringify({id:user.id,u:user.u}));
+      entrarNoApp();
+    }
+
+    function entrarNoApp(){
       document.getElementById('loginScreen').classList.add('hidden');
       document.getElementById('appScreen').classList.remove('hidden');
-      document.getElementById('nomeUser').textContent = `Olá, ${user.n}`;
+      document.getElementById('nomeUser').textContent = `Olá, ${userAtual.n}`;
       
-      if(user.t.toLowerCase()==='entregador') pedirPermissaoNotif();
+      if(userAtual.t.toLowerCase()==='entregador') pedirPermissaoNotif();
       carregarApp();
     }
 
     window.sair = () => {
+      // CORREÇÃO 3: LIMPA LOGIN SALVO
+      localStorage.removeItem('userEntregaFacil');
       userAtual = null;
       pararNotificacao();
       document.getElementById('appScreen').classList.add('hidden');
@@ -543,12 +565,3 @@
           const ultima = ultimasMsgs[ultimasMsgs.length-1];
           const chatAntigo = chats[chatId]? Object.values(chats[chatId]) : [];
           if(ultima && ultima.remetenteId!== userAtual.id && pedidos[chatId] && ultimasMsgs.length > chatAntigo.length){
-            notificar(`💬 ${ultima.remetente}`, ultima.texto);
-          }
-        });
-      }
-      chats = novosChats;
-    });
-  </script>
-</body>
-</html>
