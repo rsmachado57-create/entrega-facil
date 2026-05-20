@@ -122,7 +122,7 @@
     let audioTocando = false;
     let timeoutNotificacao = null;
 
-    // CORREÇÃO 1: VERIFICA SE JÁ TÁ LOGADO AO ABRIR
+    // AUTO-LOGIN SE JÁ TIVER SALVO
     const loginSalvo = localStorage.getItem('userEntregaFacil');
     if(loginSalvo){
       const dados = JSON.parse(loginSalvo);
@@ -156,7 +156,7 @@
     }
 
     function notificar(titulo, corpo){
-      audioNotificacao.play();
+      audioNotificacao.play().catch(()=>{});
       if(!audioTocando){
         audioTocando = true;
         timeoutNotificacao = setTimeout(()=>{
@@ -191,7 +191,6 @@
       if(!user.id) return alert('Usuário antigo sem ID. Apague e crie novamente pelo painel admin.');
       
       userAtual = user;
-      // CORREÇÃO 2: SALVA LOGIN NO NAVEGADOR
       localStorage.setItem('userEntregaFacil', JSON.stringify({id:user.id,u:user.u}));
       entrarNoApp();
     }
@@ -206,7 +205,6 @@
     }
 
     window.sair = () => {
-      // CORREÇÃO 3: LIMPA LOGIN SALVO
       localStorage.removeItem('userEntregaFacil');
       userAtual = null;
       pararNotificacao();
@@ -565,3 +563,12 @@
           const ultima = ultimasMsgs[ultimasMsgs.length-1];
           const chatAntigo = chats[chatId]? Object.values(chats[chatId]) : [];
           if(ultima && ultima.remetenteId!== userAtual.id && pedidos[chatId] && ultimasMsgs.length > chatAntigo.length){
+            notificar(`💬 ${ultima.remetente}`, ultima.texto);
+          }
+        });
+      }
+      chats = novosChats;
+    });
+  </script>
+</body>
+</html>
